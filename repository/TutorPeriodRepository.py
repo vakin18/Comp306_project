@@ -1,7 +1,7 @@
 import repository.Repository as Repo
 from constants import DB, PERIOD_TUPLES, PeriodModel
 
-def initializePeriodTable():
+def initializeTutorPeriodTable():
     c, conn = Repo.getCursorAndConnection()
 
     query = f'''CREATE TABLE IF NOT EXISTS {DB.tutor_period}(
@@ -9,7 +9,7 @@ def initializePeriodTable():
     tutor_username VARCHAR(50),
     period_id INTERGER,
     FOREIGN KEY (tutor_username) REFERENCES {DB.tutors}(username),
-    FOREIGN KEY (period_id) REFERENCES {DB.periods}(id),
+    FOREIGN KEY (period_id) REFERENCES {DB.periods}(id)
     );'''
 
     c.execute(query)
