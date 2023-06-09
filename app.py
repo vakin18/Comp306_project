@@ -1,7 +1,10 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, session
 import setup
 import socket
 import service.UserService as US
+import service.TutorPeriodService as TPS
+
+from constants import DAYS, INTERVALS
 
 
 app = Flask(__name__)
@@ -24,9 +27,10 @@ def login():
 @app.route('/signup', methods=['POST'])
 def signup():
     username = request.form.get('username')
+    email = request.form.get('email')
     password = request.form.get('password')
     role = request.form.get('role_selection')
-    return US.signup(username, password, role)
+    return US.signup(username, email, password, role)
 
 
 @app.route('/logout', methods=['POST'])
@@ -34,6 +38,21 @@ def logout():
     return US.logout()
 
 
+@app.route('/addTutor', methods=['POST'])
+def addTutor():
+    username = request.form.get('username')
+    US.createTutor(username)
+    return render_template('dashboard.html', username=session.get("username"), role='admin', days=DAYS, intervals=INTERVALS)
+
+
+@app.route('/addTutorPeriod', methods=['POST'])
+def addTutorPeriod():
+    tutor_username = request.form.get('username')
+    day = request.form.get('day')
+    interval = request.form.get('interval')
+
+    TPS.createTutorPeriod(tutor_username, day, interval)
+    return render_template('dashboard.html', username=session.get("username"), role='admin', days=DAYS, intervals=INTERVALS)
 
 
 

@@ -1,13 +1,23 @@
 from flask import render_template, session
 import repository.UserRepository as UR
-from constants import UserModel, Password
-
+from constants import UserModel, Password, DAYS, INTERVALS
+DEBUG = True
 
 def initializeUserTable():
     return UR.initializeUserTable
 
 def createUser(username: str, password: str, role: str):
     UR.createUser(username, password, role)
+
+def createTutor(username: str):
+    user_exists = UR.userExistsByUsername(username)
+    if not user_exists:
+        #TODO: handle error
+        if DEBUG:
+            print("Cannot create tutor because user does not exists.")
+        return
+    
+    UR.createTutor(username)
 
 def getUserByUsername(username: str):
     return UR.getUserByUsername(username)
@@ -31,24 +41,24 @@ def login(username: str, password: str):
             session["username"] = username
             session["role"] = role
 
-            return render_template("dashboard.html", username=username, role=role)
+            return render_template("dashboard.html", username=username, role=role, days=DAYS, intervals=INTERVALS)
 
         else:
             error_message = f"Incorrect password."
             return render_template("opening_screen.html", error_message=error_message)
         
-def signup(username: str, password: str, role: str):
+def signup(username: str, email: str, password: str, role: str):
     is_valid, error_template = validate_credentials(username, password)
 
     if not is_valid:
         return error_template
 
-    UR.createUser(username, password, role)
+    UR.createUser(username, email, password, role)
 
     session["username"] = username
     session["role"] = role
 
-    return render_template("dashboard.html", username=username, role=role)
+    return render_template("dashboard.html", username=username, role=role, days=DAYS, intervals=INTERVALS)
 
 def logout():
     if "username" in session:

@@ -5,6 +5,8 @@
     <title>Dashboard for {{role}}</title>
 </head>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
 <body>
   <h1>Welcome {{username}}. This is the dashboard for {{role}}s</h1>
 
@@ -26,19 +28,48 @@
   {% if role == "admin" %}
   <br>
   <div class="buttons">
-      <form action="/feature3" method="GET">
-          <button>Only admin should see this</button>
+      <form action="/addTutor" method="POST">
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" placeholder="Enter tutor username" required>
+          <button>Add new tutor</button>
       </form>
   </div>
-  {% endif %}
 
-  <br>
   <div class="buttons">
+    <form action="/addTutorPeriod" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter tutor username" required>
+        
+        <select id="day_selection" name="day_selection" class="select"  >
+            {% for day in days %}
+            <option value="{{day}}">{{day}}</option>
+            {% endfor %}
+        </select>
+
+        
+        <select id="interval_selection" name="interval_selection">
+            {% for interval in intervals %}
+            <option value="{{interval}}">{{interval}}</option>
+            {% endfor %}
+        </select>
+        
+        <button>Assign period to tutor</button>
+    </form>
+</div>
+{% endif %}
+
+
+
+
+
+<br>
+<div class="buttons">
     <form action="/logout" method="POST">
         <button>Logout</button>
     </form>
-  </div>
+</div>
 
 </body>
+
 
 </html>

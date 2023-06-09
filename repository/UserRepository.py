@@ -1,3 +1,4 @@
+from datetime import date
 import bcrypt
 
 import repository.Repository as Repo
@@ -8,6 +9,7 @@ def initializeUserTable():
 
     query = f'''CREATE TABLE IF NOT EXISTS {DB.users}( 
     username VARCHAR(50),
+    email VARCHAR(50) UNIQUE,
     password VARCHAR(50) NOT NULL,
     role VARCHAR(50),
     PRIMARY KEY (username));'''
@@ -17,6 +19,21 @@ def initializeUserTable():
     conn.close()
 
     populateUserTable()
+    return
+
+def initializeTutorTable():
+    c, conn = Repo.getCursorAndConnection()
+
+    query = f'''CREATE TABLE IF NOT EXISTS {DB.tutors}( 
+    username VARCHAR(50),
+    start_date DATE NOT NULL, 
+    PRIMARY KEY (username),
+    FOREIGN KEY (username) REFERENCES {DB.users}(username));'''
+
+    c.execute(query)
+    conn.commit()
+    conn.close()
+
     return
 
 def populateUserTable():
@@ -33,11 +50,22 @@ def populateUserTable():
     conn.commit()
     conn.close()
 
-def createUser(username: str, password: str, role: str):
+def createUser(username: str, email: str, password: str, role: str):
     c, conn = Repo.getCursorAndConnection()
     c.execute(
-        f"INSERT INTO {DB.users} (username, password, role) VALUES (?, ?, ?)",
-        (username, encrypt_password(password), role)
+        f"INSERT INTO {DB.users} (username, email, password, role) VALUES (?, ?, ?, ?)",
+        (username, email, encrypt_password(password), role)
+    )
+    conn.commit()
+    conn.close()
+
+def createTutor(username: str):
+    c, conn = Repo.getCursorAndConnection()
+
+    today = date.today()
+    c.execute(
+        f"INSERT INTO {DB.tutors} (username, start_date) VALUES (?, ?)",
+        (username, today)
     )
     conn.commit()
     conn.close()
