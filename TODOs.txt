@@ -8,11 +8,7 @@ tutor-course TABLE
 tp_id-tutor-period TABLE: many-to-many
 tp_id-cubicle TABLE: many-to-1
 
-Pazartesi 1-2
-Pazartesi 2-3
+tutor-period için kısıtlama -> max 3 tane assign olabilir
 
 
 pazartesi 1-2 cubicle
-
-select count(*) from period-cubicle where period = some_period
-count(*) = count(cubicle)
