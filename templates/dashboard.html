@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard for {{role}}</title>
+</head>
+
+<body>
+  <h1>Welcome {{username}}. This is the dashboard for {{role}}s</h1>
+
+  <div class="buttons">
+      <form action="/feature1" method="GET">
+          <button>Both admin and tutor should see this</button>
+      </form>
+  </div>
+  
+  {% if role == "tutor" %}
+  <br>
+  <div class="buttons">
+      <form action="/feature2" method="GET">
+          <button>Only tutor should see this</button>
+      </form>
+  </div>
+  {% endif %}
+  
+  {% if role == "admin" %}
+  <br>
+  <div class="buttons">
+      <form action="/feature3" method="GET">
+          <button>Only admin should see this</button>
+      </form>
+  </div>
+  {% endif %}
+
+  <br>
+  <div class="buttons">
+    <form action="/logout" method="POST">
+        <button>Logout</button>
+    </form>
+  </div>
+
+</body>
+
+</html>

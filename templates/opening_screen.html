@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Welcome to KOLT Tutor</title>
+  </head>
+
+  <body>
+    <h1>Welcome to KOLT Tutor</h1>
+
+  <form action="/login" autocomplete="off" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" placeholder="Enter username" required>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" placeholder="Enter password" required>
+    <br>
+    <input id="login" type="submit" value="Login">
+  </form>
+
+  <br>
+  <br>
+
+  <form action="/signup" autocomplete="off" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" placeholder="Enter username" required>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" placeholder="Enter password" required>
+    <label for="role">Role</label>
+    <select id="role_selection" name="role_selection">
+      <option value="tutor">Tutor</option>
+      <option value="admin">Admin</option>
+    </select>
+    <br>
+    <input id="signup" type="submit" value="Signup">
+  </form>
+
+  </body>
+
+  {% if error_message %}
+  <p class="error-message">{{ error_message }}</p>
+  {% endif %}
+
+  {% if role %}
+  <p class="success-message">This message is temporary: {{ role }}</p>
+  {% endif %}
+
+</html>
