@@ -1,4 +1,4 @@
-from flask import Flask, request, session, render_template
+from flask import Flask, request, render_template
 import setup
 import socket
 import service.UserService as US
@@ -27,6 +27,7 @@ def signup():
     password = request.form.get('password')
     role = request.form.get('role_selection')
     return US.signup(username, password, role)
+
 
 @app.route('/logout', methods=['POST'])
 def logout():

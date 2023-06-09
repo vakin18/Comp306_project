@@ -1,0 +1,18 @@
+period TABLE
+cubicle TABLE
+tutor TABLE
+admin'e period ve cubicle için CRUD operation'lar eklencek
+admin tutor'a course ataması yapabilecek
+assignCourse() tarzı bi method
+tutor-course TABLE
+tp_id-tutor-period TABLE: many-to-many
+tp_id-cubicle TABLE: many-to-1
+
+Pazartesi 1-2
+Pazartesi 2-3
+
+
+pazartesi 1-2 cubicle
+
+select count(*) from period-cubicle where period = some_period
+count(*) = count(cubicle)

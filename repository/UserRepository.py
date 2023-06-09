@@ -1,7 +1,7 @@
 import bcrypt
 
 import repository.Repository as Repo
-from constants import DB, USER_TUPLES, UserModel
+from constants import DB, USER_TUPLES, STUDENT_TUPLES, UserModel
 
 def initializeUserTable():
     c, conn = Repo.getCursorAndConnection()
@@ -26,6 +26,10 @@ def populateUserTable():
         if not userExistsByUsername(user[UserModel.username]):
             createUser(*user)
 
+    for user in STUDENT_TUPLES:
+        if not userExistsByUsername(user[UserModel.username]):
+            createUser(*user)
+
     conn.commit()
     conn.close()
 
@@ -46,9 +50,12 @@ def getUserByUsername(username: str):
         f"SELECT * FROM {DB.users} WHERE username = ?", (username,))
 
     user = c.fetchone()
-    conn.commit()
     conn.close()
     return user
+
+def isUserTutor(username: str):
+    #TODO: implement this 
+    return
 
 def userExistsByUsername(username: str):
     """
