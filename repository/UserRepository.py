@@ -81,9 +81,21 @@ def getUserByUsername(username: str):
     conn.close()
     return user
 
-def isUserTutor(username: str):
-    #TODO: implement this 
-    return
+def getTutorByUsername(username: str):
+    c, conn = Repo.getCursorAndConnection()
+
+    # Check if the username exists in the database
+    c.execute(
+        f"SELECT * FROM {DB.tutors} WHERE username = ?", (username,))
+
+    user = c.fetchone()
+    conn.close()
+    return user
+
+def isTutorByUsername(username: str):
+    tutor = getTutorByUsername(username)
+
+    return not (tutor is None)
 
 def userExistsByUsername(username: str):
     """

@@ -36,6 +36,15 @@ def createPeriod(day, interval):
     conn.commit()
     conn.close()
 
+def getAllPeriods():
+    c, conn = Repo.getCursorAndConnection()
+    c.execute(
+        f"SELECT * FROM {DB.periods}")
+
+    periods = c.fetchall()
+    conn.close()
+    return periods
+
 def getPeriod(day, interval):
     c, conn = Repo.getCursorAndConnection()
     c.execute(

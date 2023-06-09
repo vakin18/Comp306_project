@@ -43,7 +43,7 @@ def createTutorPeriod(tutor_username, period_id):
 def getTutorPeriod(tutor_username, period_id):
     c, conn = Repo.getCursorAndConnection()
     c.execute(
-        f"SELECT * FROM {DB.tutor_period} WHERE day = ? and interval = ?", (tutor_username, period_id))
+        f"SELECT * FROM {DB.tutor_period} WHERE tutor_username = ? and period_id = ?", (tutor_username, period_id))
 
     period = c.fetchone()
     conn.close()

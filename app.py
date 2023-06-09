@@ -3,8 +3,7 @@ import setup
 import socket
 import service.UserService as US
 import service.TutorPeriodService as TPS
-
-from constants import DAYS, INTERVALS
+import service.PeriodService as PS
 
 
 app = Flask(__name__)
@@ -42,17 +41,27 @@ def logout():
 def addTutor():
     username = request.form.get('username')
     US.createTutor(username)
-    return render_template('dashboard.html', username=session.get("username"), role='admin', days=DAYS, intervals=INTERVALS)
+    periods = PS.getAllPeriods()
+    period_strings = PS.periodToString(periods)
+    return render_template('dashboard.html', username=session.get("username"), role='admin', periods=period_strings)
 
 
 @app.route('/addTutorPeriod', methods=['POST'])
 def addTutorPeriod():
     tutor_username = request.form.get('username')
-    day = request.form.get('day')
-    interval = request.form.get('interval')
+    period_strings = request.form.getlist('day_selection')
+  
+    if DEBUG:
+        print(f'period_strings: {period_strings}')
 
-    TPS.createTutorPeriod(tutor_username, day, interval)
-    return render_template('dashboard.html', username=session.get("username"), role='admin', days=DAYS, intervals=INTERVALS)
+    periods = PS.stringToPeriod(period_strings)
+
+    for day, interval in periods:
+        TPS.createTutorPeriod(tutor_username, day, interval)
+
+    periods = PS.getAllPeriods()
+    period_strings = PS.periodToString(periods)
+    return render_template('dashboard.html', username=session.get("username"), role='admin', periods=period_strings)
 
 
 

@@ -1,6 +1,8 @@
 from flask import render_template, session
+import service.PeriodService as PS
 import repository.UserRepository as UR
-from constants import UserModel, Password, DAYS, INTERVALS
+from constants import UserModel, Password
+
 DEBUG = True
 
 def initializeUserTable():
@@ -25,6 +27,9 @@ def getUserByUsername(username: str):
 def userExistsByUsername(username: str):
     return UR.userExistsByUsername(username)
 
+def isTutorByUsername(username: str):
+    return UR.isTutorByUsername(username)
+
 def login(username: str, password: str):
         user_exists = UR.userExistsByUsername(username)
 
@@ -41,7 +46,9 @@ def login(username: str, password: str):
             session["username"] = username
             session["role"] = role
 
-            return render_template("dashboard.html", username=username, role=role, days=DAYS, intervals=INTERVALS)
+            periods = PS.getAllPeriods()
+            period_strings = PS.periodToString(periods)
+            return render_template("dashboard.html", username=username, role=role, periods=period_strings)
 
         else:
             error_message = f"Incorrect password."
@@ -58,7 +65,9 @@ def signup(username: str, email: str, password: str, role: str):
     session["username"] = username
     session["role"] = role
 
-    return render_template("dashboard.html", username=username, role=role, days=DAYS, intervals=INTERVALS)
+    periods = PS.getAllPeriods()
+    period_strings = PS.periodToString(periods)
+    return render_template("dashboard.html", username=username, role=role, periods=period_strings)
 
 def logout():
     if "username" in session:
