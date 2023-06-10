@@ -50,6 +50,7 @@ def unassignCourse(tutor_name: str, course_code: str):
         print("This course is not assigned to this tutor. Cannot unassign.")
 
     CTR.unassignCourse(course_code, tutor_name)
+    CS.updateHeadTutorIfNeeded(course_code, tutor_name)
     TS.removeTutorIfNoCourse(tutor_name)
 
 

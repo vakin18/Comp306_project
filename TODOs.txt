@@ -11,6 +11,9 @@ tutor'ın course'larını delete etme opsiyonu eklencek
     delete ederken 0 kalırsa bunu handle et (ya tutor'dan sil, ya da kaldırmayı onaylama)
 tutor'ların username field'ını combobox'a çevir
 
+student için, course'ları multiple select yap, tüm bu course'ları veren tutor'ları döndür
+
+
 tutor-period için kısıtlama -> max 3 tane assign olabilir
 
 

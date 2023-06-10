@@ -43,9 +43,9 @@ STUDENT_TUPLES = [(f"student{i}", f"student{i}@ku.edu.tr", "password", "student"
 TUTOR_TUPLES = [student[UserModel.username] for student in STUDENT_TUPLES[0:10]]
 
 
-COURSE_TUPLES = [('comp306', 'database management systems', 'buzun'),
-                 ('comp301', 'programming language concepts', 'basar'),
-                 ('comp304', 'operating systems', 'vedat'),
+COURSE_TUPLES = [('comp306', 'database management systems', None),
+                 ('comp301', 'programming language concepts', None),
+                 ('comp304', 'operating systems', None),
                  ('comp302', 'something something', None),
                  ('comp201', 'computer systems & programming', None),
                  ('comp202', 'data structures & algorithms', None),

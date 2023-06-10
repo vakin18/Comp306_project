@@ -14,3 +14,20 @@ def courseExistsByCode(code: str):
 
 def updateHeadTutorToCourse(courseCode: str, headTutorName: str):
     return CR.updateHeadTutorToCourse(courseCode, headTutorName)
+
+def deleteCourse(code):
+    course_exists = courseExistsByCode(code)
+
+    if not course_exists:
+        # TODO: Handle
+        print("This course does not exist. Cannot remove")
+        return
+    
+    CR.deleteCourse(code)
+
+def updateHeadTutorIfNeeded(course_code, tutor_name):
+    """
+    Update head tutor to null if course.head_tutor = tutor_name
+    """
+    CR.updateHeadTutorIfNeeded(course_code, tutor_name)
+    return

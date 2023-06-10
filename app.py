@@ -56,6 +56,16 @@ def addCourse():
 
     return redirect(url_for("dashboard"))
 
+@app.route('/remove-course', methods=['POST'])
+def removeCourse():
+    courses = request.form.getlist('course_selection')
+
+    for course in courses:
+        CS.deleteCourse(course)
+
+    TS.removeTutorsWithNoCourse()
+
+    return redirect(url_for("dashboard"))
 
 
 @app.route('/add-period', methods=['POST'])
@@ -64,6 +74,17 @@ def addPeriod():
     interval = request.form.get('interval_selection')
 
     PS.createPeriod(day, interval)
+
+    return redirect(url_for("dashboard"))
+
+
+@app.route('/remove-period', methods=['POST'])
+def removePeriod():
+    days_intervals = request.form.getlist('period_selection')
+
+    for day_interval in days_intervals:
+        day, interval = PS.stringToPeriod([day_interval])[0]
+        PS.deletePeriodByDayAndInterval(day, interval)
 
     return redirect(url_for("dashboard"))
 
@@ -183,7 +204,8 @@ def dashboard():
     role = session.get("role")
 
     if role == "admin":
-        periods = PS.getAllPeriods()
+        periods = PS.getAllPeriods() # id,day,interval
+        periods = [period[1:3] for period in periods] #day, interval
         period_strings = PS.periodToString(periods)
         students = US.getAllStudents()
         courses = CS.getAllCourses()

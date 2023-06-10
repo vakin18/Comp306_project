@@ -12,3 +12,7 @@ def getTutorByCourse(courseCode: str):
 
 def removeTutorIfNoCourse(tutor_name: str):
     UR.removeTutorIfNoCourse(tutor_name)
+
+def removeTutorsWithNoCourse():
+    UR.removeTutorsWithNoCourse()
+    

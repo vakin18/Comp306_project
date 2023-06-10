@@ -142,13 +142,24 @@ def removeTutorIfNoCourse(tutor_name: str):
               username = '{tutor_name}' and
               '{tutor_name}' NOT IN (SELECT tutor_name FROM {DB.course_tutor}) """
 
-    print(query)
 
     c.execute(query)
 
     conn.commit()
     conn.close()
 
+
+def removeTutorsWithNoCourse():
+    c, conn = Repo.getCursorAndConnection()
+
+    query = f"""DELETE FROM {DB.tutors} WHERE 
+                NOT EXISTS (SELECT * FROM {DB.course_tutor}
+                            WHERE tutor_name = username) """
+
+    c.execute(query)
+
+    conn.commit()
+    conn.close()
 
 def encrypt_password(password: str):
     """

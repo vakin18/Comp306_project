@@ -9,7 +9,7 @@ def initializeCourseTable():
     name VARCHAR(50),
     headtutor_name VARCHAR(50),
     PRIMARY KEY (code),
-    FOREIGN KEY (headtutor_name) REFERENCES {DB.users}(username));'''
+    FOREIGN KEY (headtutor_name) REFERENCES {DB.tutors}(username));'''
 
     c.execute(query)
     conn.commit()
@@ -57,11 +57,17 @@ def courseExistsByCode(code: str):
 def updateHeadTutorToCourse(courseCode: str, headTutorName: str):
     c, conn = Repo.getCursorAndConnection()
 
-    query = f"UPDATE {DB.courses} SET headtutor_name = '{headTutorName}' WHERE code = '{courseCode}'"
+    query = f"""UPDATE {DB.courses} SET headtutor_name = '{headTutorName}'
+            WHERE code = '{courseCode}' and 
+            EXISTS (SELECT tutor_name
+                    FROM {DB.course_tutor}
+                    WHERE course_code = '{courseCode}' and
+                    tutor_name = '{headTutorName}')"""
 
     c.execute(query)
     conn.commit()
     conn.close()
+    return
 
 def getAllCourses():
     c, conn = Repo.getCursorAndConnection()
@@ -72,3 +78,24 @@ def getAllCourses():
     conn.close()
 
     return courses
+
+def deleteCourse(code):
+    c, conn = Repo.getCursorAndConnection()
+    c.execute(f"DELETE FROM {DB.courses} WHERE code = '{code}'")
+
+    conn.commit()
+    conn.close()
+    return
+
+def updateHeadTutorIfNeeded(course_code, tutor_name):
+    """
+    Update head tutor to null if course.head_tutor = tutor_name
+    """
+    c, conn = Repo.getCursorAndConnection()
+
+    query = f"UPDATE {DB.courses} SET headtutor_name = NULL WHERE code = '{course_code}' and headtutor_name = '{tutor_name}'"
+
+    c.execute(query)
+    conn.commit()
+    conn.close()
+    return

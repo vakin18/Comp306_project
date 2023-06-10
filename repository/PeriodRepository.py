@@ -67,3 +67,11 @@ def getDayAndInterval(period_id):
     day, interval = c.fetchone()
     conn.close()
     return day, interval
+
+def deletePeriodByDayAndInterval(day: str, interval: str):
+    c, conn = Repo.getCursorAndConnection()
+    c.execute(f"DELETE FROM {DB.periods} WHERE day = '{day}' and interval = '{interval}'")
+
+    conn.commit()
+    conn.close()
+    return

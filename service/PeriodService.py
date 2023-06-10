@@ -2,6 +2,7 @@ from constants import PeriodModel
 import repository.PeriodRepository as PR
 
 def periodToString(periods):
+    # Expects only day and interval
     periodStrings = []
     for period in periods:
         periodStrings.append(f'{period[0]}, {period[1]}')
@@ -18,6 +19,7 @@ def getPeriod(day, interval):
 
 
 def stringToPeriod(period_strings):
+    # Expects day, interval
     periods = []
     for period_string in period_strings:
         day, interval = period_string.split(', ')
@@ -41,3 +43,13 @@ def getDayAndInterval(period_id):
     period_string = periodToString([(day, interval)])[0]
 
     return period_string
+
+
+def deletePeriodByDayAndInterval(day: str, interval: str):
+    period_exists = PR.periodExists(day, interval)
+    if not period_exists:
+        # TODO: Handle
+        print("This day-interval period does not exist. Cannot remove")
+        return
+    
+    PR.deletePeriodByDayAndInterval(day, interval)
