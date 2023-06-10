@@ -3,7 +3,7 @@ class DB:
     tutors = "tutors_db"
     project_db = "project_db.db"
     courses = "courses_db"
-    cubicle = "cubicles_db"
+    cubicles = "cubicles_db"
     periods = "periods_db"
     tutor_period = "tutor_period_db"
     course_tutor = "course_tutor_db"
@@ -22,6 +22,10 @@ class PeriodModel:
     id = 0
     day = 1
     interval = 2
+
+class CubicleModel:
+    cubicle_number = 0
+    location = 1
 
 class Password:
     MIN_LENGTH = 3
@@ -72,3 +76,5 @@ PERIOD_TUPLES = []
 for day in DAYS:
     for interval in INTERVALS:
         PERIOD_TUPLES.append((day, interval))
+
+CUBICLE_TUPLES = []
