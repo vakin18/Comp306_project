@@ -81,7 +81,7 @@ def addTutor():
 
 @app.route('/assign-course', methods=['POST'])
 def assignCourse():
-    username = request.form.get('tutor')
+    username = request.form.get('all_tutors')
     courses = request.form.getlist('course_selection')
 
     for course in courses:
@@ -92,7 +92,7 @@ def assignCourse():
 
 @app.route('/addTutorPeriod', methods=['POST'])
 def addTutorPeriod():
-    tutor_username = request.form.get('tutor')
+    tutor_username = request.form.get('all_tutors')
     period_strings = request.form.getlist('period_selection')
   
 
@@ -102,6 +102,60 @@ def addTutorPeriod():
         TPS.createTutorPeriod(tutor_username, day, interval)
 
     return redirect(url_for("dashboard"))
+
+
+
+@app.route('/select-tutor', methods=['GET'])
+def selectTutor():
+    selected_tutor = request.args.get("all_tutors")
+
+    periods = PS.getAllPeriods()
+    period_strings = PS.periodToString(periods)
+    all_courses = CS.getAllCourses()
+    all_tutors = TS.getAllTutors()
+    assigned_courses = CTS.getCoursesByTutor(selected_tutor)
+    
+    return render_template('dashboard.html', username=session.get("username"), role='admin', periods=period_strings, 
+                           courses=all_courses, selected_tutor=selected_tutor, assigned_courses=assigned_courses,
+                           all_tutors=all_tutors)
+
+@app.route('/unassign-course', methods=['POST'])
+def unassignCourse():
+    selected_tutor = request.form.get('all_tutors')
+    assigned_courses = request.form.getlist('course_selection')
+
+    for assigned_course in assigned_courses:
+        CTS.unassignCourse(selected_tutor, assigned_course)
+
+    return dashboard()
+
+
+
+
+@app.route('/select-tutor-for-period', methods=['GET'])
+def selectTutorForPeriod():
+    selected_tutor = request.args.get("all_tutors")
+
+    periods = PS.getAllPeriods()
+    period_strings = PS.periodToString(periods)
+    all_courses = CS.getAllCourses()
+    all_tutors = TS.getAllTutors()
+    assigned_periods = TPS.getPeriodsByTutor(selected_tutor)
+    
+    return render_template('dashboard.html', username=session.get("username"), role='admin', periods=period_strings, 
+                           courses=all_courses, selected_tutor=selected_tutor, assigned_periods=assigned_periods,
+                           all_tutors=all_tutors)
+
+
+@app.route('/unassign-period', methods=['POST'])
+def unassignPeriod():
+    selected_tutor = request.form.get('all_tutors')
+    assigned_periods = request.form.getlist('period_selection')
+
+    for assigned_period in assigned_periods:
+        TPS.unassignPeriod(selected_tutor, assigned_period)
+
+    return dashboard()
 
 
 @app.route('/selectCourse', methods=['GET'])
@@ -133,15 +187,16 @@ def dashboard():
         period_strings = PS.periodToString(periods)
         students = US.getAllStudents()
         courses = CS.getAllCourses()
-
+        tutors = TS.getAllTutors()
         all_days, all_intervals = ALL_DAYS, ALL_INTERVALS
 
         return render_template('dashboard.html', username=session.get("username"), role=role, 
                                periods=period_strings, courses=courses, students=students, 
-                               all_days=all_days, all_intervals=all_intervals)
+                               all_days=all_days, all_intervals=all_intervals, all_tutors=tutors)
     
 
     return render_template('dashboard.html', username=session.get("username"), role=role)
+
 
 
 def get_ip_address():

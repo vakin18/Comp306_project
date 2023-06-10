@@ -98,8 +98,14 @@
 
     <div class="buttons">
         <form action="/assign-course" method="POST">
-            <label for="tutor">Tutor:</label>
-            <input type="text" id="tutor" name="tutor" placeholder="Enter tutor username" required>
+            <label for="all_tutors">Tutor:</label>
+            <select id="all_tutors" name="all_tutors">
+                {% if all_tutors %}
+                {% for tutor in all_tutors %}
+                <option value="{{tutor}}" {% if selected_tutor and tutor==selected_tutor %} selected {% endif %}> {{tutor}} </option>
+                {% endfor %}
+                {% endif %}
+            </select>
 
             <select id="course_selection" name="course_selection" class="selectpicker" multiple
                 aria-label="size 3 select example">
@@ -112,11 +118,71 @@
         </form>
     </div>
 
+    <div class="buttons">
+        <form action="/select-tutor" method="GET">
+            <label for="tutor">Tutor:</label>
+            <select id="all_tutors" name="all_tutors">
+                {% if all_tutors %}
+                {% for tutor in all_tutors %}
+                <option value="{{tutor}}" {% if selected_tutor and tutor==selected_tutor %} selected {% endif %}> {{tutor}} </option>
+                {% endfor %}
+                {% endif %}
+            </select>
+            <button>Get courses</button>
+        </form>
+
+        <form action="/unassign-course" method="POST">
+            <label for="course_selection">Courses:</label>
+            <select id="course_selection" name="course_selection" class="selectpicker" multiple
+                aria-label="size 3 select example">
+                {% for assigned_course in assigned_courses %}
+                <option value="{{assigned_course}}">{{assigned_course}}</option>
+                {% endfor %}
+            </select>
+
+            <input type="hidden" id="all_tutors" name="all_tutors" value={{selected_tutor}}>
+            <button>Unassign course from tutor</button>
+        </form>
+    </div>
+
+
+    <div class="buttons">
+        <form action="/select-tutor-for-period" method="GET">
+            <label for="tutor">Tutor:</label>
+            <select id="all_tutors" name="all_tutors">
+                {% if all_tutors %}
+                {% for tutor in all_tutors %}
+                <option value="{{tutor}}" {% if selected_tutor and tutor==selected_tutor %} selected {% endif %}> {{tutor}} </option>
+                {% endfor %}
+                {% endif %}
+            </select>
+            <button>Get periods</button>
+        </form>
+
+        <form action="/unassign-period" method="POST">
+            <label for="period_selection">Periods:</label>
+            <select id="period_selection" name="period_selection" class="selectpicker" multiple
+                aria-label="size 3 select example">
+                {% for assigned_period in assigned_periods %}
+                <option value="{{assigned_period}}">{{assigned_period}}</option>
+                {% endfor %}
+            </select>
+
+            <input type="hidden" id="all_tutors" name="all_tutors" value={{selected_tutor}}>
+            <button>Unassign period from tutor</button>
+        </form>
+    </div>
 
     <div class="buttons">
         <form action="/addTutorPeriod" method="POST">
-            <label for="tutor">Tutor:</label>
-            <input type="text" id="tutor" name="tutor" placeholder="Enter tutor username" required>
+            <label for="all_tutors">Tutor:</label>
+            <select id="all_tutors" name="all_tutors">
+                {% if all_tutors %}
+                {% for tutor in all_tutors %}
+                <option value="{{tutor}}" {% if selected_tutor and tutor==selected_tutor %} selected {% endif %}> {{tutor}} </option>
+                {% endfor %}
+                {% endif %}
+            </select>
 
             <select id="period_selection" name="period_selection" class="selectpicker" multiple
                 aria-label="size 3 select example">

@@ -8,8 +8,8 @@ def initializeTutorPeriodTable():
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     tutor_username VARCHAR(50),
     period_id INTERGER,
-    FOREIGN KEY (tutor_username) REFERENCES {DB.tutors}(username),
-    FOREIGN KEY (period_id) REFERENCES {DB.periods}(id)
+    FOREIGN KEY (tutor_username) REFERENCES {DB.tutors}(username) ON DELETE CASCADE,
+    FOREIGN KEY (period_id) REFERENCES {DB.periods}(id) ON DELETE CASCADE
     );'''
 
     c.execute(query)
@@ -53,3 +53,19 @@ def tutorPeriodExists(tutor_username, period_id):
     tutor_period = getTutorPeriod(tutor_username, period_id)
 
     return not (tutor_period is None)
+
+def getPeriodsByTutor(selected_tutor):
+    c, conn = Repo.getCursorAndConnection()
+    c.execute(f"SELECT period_id FROM {DB.tutor_period} WHERE tutor_username = '{selected_tutor}'")
+
+    result = c.fetchall()
+    conn.close()
+    return result
+
+def unassignPeriod(selected_tutor, assigned_period):
+    c, conn = Repo.getCursorAndConnection()
+    c.execute(f"DELETE FROM {DB.tutor_period} WHERE tutor_username = '{selected_tutor}' and period_id = {assigned_period}")
+
+    conn.commit()
+    conn.close()
+    return

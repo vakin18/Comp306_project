@@ -32,7 +32,6 @@ def createTutor(username: str, courses):
         CTS.createCourseTutor(course, username)
 
 
-
 def getUserByUsername(username: str):
     return UR.getUserByUsername(username)
 

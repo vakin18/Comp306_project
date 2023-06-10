@@ -37,6 +37,14 @@ def getTutorsByCourse(courseCode: str):
     conn.close()
     return result
 
+def getCoursesByTutor(tutor_name: str):
+    c, conn = Repo.getCursorAndConnection()
+    c.execute(f"SELECT course_code FROM {DB.course_tutor} WHERE tutor_name = '{tutor_name}'")
+
+    result = c.fetchall()
+    conn.close()
+    return result
+
 def createCourseTutor(course_code, tutor_name):
     c, conn = Repo.getCursorAndConnection()
     c.execute(
@@ -56,3 +64,24 @@ def courseTutorExists(course_code, tutor_name):
     course_tutor = c.fetchone()
     conn.close()
     return not (course_tutor is None)
+
+
+def getNumberOfCourseAssigned(tutor_name):
+    c, conn = Repo.getCursorAndConnection()
+
+    c.execute(
+        f"SELECT COUNT(*) FROM {DB.course_tutor} WHERE tutor_name = ?", (tutor_name,))
+
+    course_number = c.fetchone()[0]
+    conn.close()
+    return course_number
+
+
+def unassignCourse(course_code, tutor_name):
+    c, conn = Repo.getCursorAndConnection()
+
+    c.execute(f"DELETE FROM {DB.course_tutor} WHERE course_code = ? and tutor_name = ?", (course_code, tutor_name))
+    
+    conn.commit()
+    conn.close()
+

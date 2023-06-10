@@ -4,7 +4,7 @@ import repository.PeriodRepository as PR
 def periodToString(periods):
     periodStrings = []
     for period in periods:
-        periodStrings.append(f'{period[PeriodModel.day]}, {period[PeriodModel.interval]}')
+        periodStrings.append(f'{period[0]}, {period[1]}')
 
     return periodStrings
 
@@ -12,6 +12,10 @@ def periodToString(periods):
 def getAllPeriods():
     period_tuples = PR.getAllPeriods()
     return period_tuples
+
+def getPeriod(day, interval):
+    return PR.getPeriod(day, interval)
+
 
 def stringToPeriod(period_strings):
     periods = []
@@ -29,3 +33,11 @@ def createPeriod(day, interval):
         return
     
     PR.createPeriod(day, interval)
+    return
+
+def getDayAndInterval(period_id):
+    print(f'period id: {period_id}')
+    day, interval = PR.getDayAndInterval(period_id)
+    period_string = periodToString([(day, interval)])[0]
+
+    return period_string

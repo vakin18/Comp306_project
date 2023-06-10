@@ -58,3 +58,12 @@ def periodExists(day, interval):
     period = getPeriod(day, interval)
 
     return not (period is None)
+
+def getDayAndInterval(period_id):
+    c, conn = Repo.getCursorAndConnection()
+    c.execute(
+        f"SELECT day, interval FROM {DB.periods} WHERE id = ?", (period_id[0],))
+
+    day, interval = c.fetchone()
+    conn.close()
+    return day, interval
