@@ -1,11 +1,11 @@
-from flask import Flask, request, render_template, session
+from flask import Flask, request, render_template, session, url_for
 import setup
 import socket
 import service.UserService as US
 import service.TutorPeriodService as TPS
 import service.PeriodService as PS
 import service.TutorService as TS
-
+import service.CourseService as CS
 
 app = Flask(__name__)
 app.secret_key = '306'
@@ -65,15 +65,43 @@ def addTutorPeriod():
     return render_template('dashboard.html', username=session.get("username"), role='admin', periods=period_strings)
 
 
-@app.route('/assignHeadTutor', methods=['POST'])
+@app.route('/selectCourse', methods=['GET'])
 def addTutorCourse():
-    tutor_username = request.form.get('username')
-    day = request.form.get('day')
-    interval = request.form.get('interval')
+    selected_course = request.args.get("course_selection")
 
-    TPS.createTutorPeriod(tutor_username, day, interval)
-    return render_template('dashboard.html', username=session.get("username"), role='admin', Tutors=Tutors_List)
+    periods = PS.getAllPeriods()
+    period_strings = PS.periodToString(periods)
+    courses = CS.getAllCourses()
+    tutors = TS.getTutorByCourse(selected_course)
+    
+    return render_template('dashboard.html', username=session.get("username"), role='admin', periods=period_strings, courses=courses, tutors=tutors, selected_course=selected_course)
 
+@app.route('/assingHeadTutor', methods=['POST'])
+def assignHeadTutor():
+    selected_course = request.form.get('course_selection')
+    head_tutor = request.form.get('tutor_selection')
+
+
+    CS.updateHeadTutorToCourse(selected_course, head_tutor)
+    return dashboard()
+
+@app.route('/dashboard', methods=['GET'])
+def dashboard():
+    role = session.get("role")
+
+    if role == "admin":
+        selected_course = request.form.get("course_selection")
+        periods = PS.getAllPeriods()
+        period_strings = PS.periodToString(periods)
+        
+        # tutors = TS.getTutorByCourse(selected_course)
+
+        courses = CS.getAllCourses()
+
+        return render_template('dashboard.html', username=session.get("username"), role=role, periods=period_strings, courses=courses)
+    
+
+    return render_template('dashboard.html', username=session.get("username"), role=role)
 
 
 def get_ip_address():

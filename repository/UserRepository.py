@@ -2,7 +2,7 @@ from datetime import date
 import bcrypt
 
 import repository.Repository as Repo
-from constants import DB, USER_TUPLES, STUDENT_TUPLES, UserModel
+from constants import DB, USER_TUPLES, STUDENT_TUPLES, TUTOR_TUPLES, UserModel
 
 def initializeUserTable():
     c, conn = Repo.getCursorAndConnection()
@@ -34,6 +34,7 @@ def initializeTutorTable():
     conn.commit()
     conn.close()
 
+    populateTutorTable()
     return
 
 def getAllTutors():
@@ -55,6 +56,16 @@ def populateUserTable():
     for user in STUDENT_TUPLES:
         if not userExistsByUsername(user[UserModel.username]):
             createUser(*user)
+
+    conn.commit()
+    conn.close()
+
+def populateTutorTable():
+    c, conn = Repo.getCursorAndConnection()
+
+    for tutor in TUTOR_TUPLES:
+        if not isTutorByUsername(tutor):
+            createTutor(tutor)
 
     conn.commit()
     conn.close()

@@ -53,25 +53,34 @@
         <button>Assign period to tutor</button>
     </form>
 </div>
-    <div class="buttons">
-      <form action="/assignHeadTutor1" method="POST">
-        <label for="course_selection">Course:</label>
-        <select id="course_selection" name="course_selection">
-            {% for course in courses %}
-            <option value="{{course}}">{{course}}</option>
-            {% endfor %}
-        </select>
-          <button>Get Tutors<button>
-      </form>
 
-        <form action="/assignHeadTutor" method="POST">
-          <select id="tutor_selection" name="tutor_selection">
-            {% for tutor in tutors %}
-            <option value="{{tutor}}">{{tutor}}</option>
-            {% endfor %}
-          </select>
-          <input type="assignHeadTutor" value="Assign Head Tutor">
+    <div class="buttons">
+        
+        <form action="/selectCourse" method="GET">
+            <label for="course_selection">Course:</label>
+            <select id="course_selection" name="course_selection" >
+                {% if courses %}
+                {% for course in courses %}
+                <option value="{{course}}" {% if selected_course and course == selected_course %} selected {% endif %} >{{course}} </option>
+                {% endfor %}
+                {% endif %}
+            </select>
+            <button>Get tutors</button>
         </form>
+            
+        <form action="/assingHeadTutor" method="POST">
+            <label for="tutor_selection">Tutors:</label>
+            <select id="tutor_selection" name="tutor_selection">
+                {% if tutors %}
+                {% for tutor in tutors %}
+                <option value="{{tutor}}">{{tutor}}</option>
+                {% endfor %}
+                {% endif %}
+            </select>
+            <input type="hidden" id="course_selection" name="course_selection" value={{selected_course}}>
+            <button>Assign Head Tutor</button>
+        </form>
+        
   </div>
 {% endif %}
 

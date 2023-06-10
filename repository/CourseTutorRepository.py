@@ -22,16 +22,37 @@ def initializeCourseTutorTable():
 def populateCourseTutorTable():
     c, conn = Repo.getCursorAndConnection()
 
-    #TODO:Populate
+    for course_tutor in COURSE_TUTOR_TUPLES:
+        if not courseTutorExists(*course_tutor):
+            createCourseTutor(*course_tutor)
 
     conn.commit()
     conn.close()
 
 def getTutorsByCourse(courseCode: str):
     c, conn = Repo.getCursorAndConnection()
-
-    c.execute(f"SELECT tutor_name FROM {DB.course_tutor} WHERE course_code = {courseCode}")
+    c.execute(f"SELECT tutor_name FROM {DB.course_tutor} WHERE course_code = '{courseCode}'")
 
     result = c.fetchall()
     conn.close()
     return result
+
+def createCourseTutor(course_code, tutor_name):
+    c, conn = Repo.getCursorAndConnection()
+    c.execute(
+        f"INSERT INTO {DB.course_tutor} (course_code, tutor_name) VALUES (?, ?)",
+        (course_code, tutor_name)
+    )
+    conn.commit()
+    conn.close()
+
+
+def courseTutorExists(course_code, tutor_name):
+    c, conn = Repo.getCursorAndConnection()
+
+    c.execute(
+        f"SELECT * FROM {DB.course_tutor} WHERE course_code = ? and tutor_name = ?", (course_code, tutor_name))
+
+    course_tutor = c.fetchone()
+    conn.close()
+    return not (course_tutor is None)

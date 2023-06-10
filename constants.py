@@ -36,6 +36,8 @@ USER_TUPLES = [('buzun', "buzun@ku.edu.tr", '12345', 'admin'),
 
 STUDENT_TUPLES = [(f"student{i}", f"student{i}@ku.edu.tr", "password", "student") for i in range(20)]
 
+TUTOR_TUPLES = [student[UserModel.username] for student in STUDENT_TUPLES[0:10]]
+
 
 COURSE_TUPLES = [('comp306', 'database management systems', 'buzun'),
                  ('comp301', 'programming language concepts', 'basar'),
@@ -53,8 +55,16 @@ COURSE_TUPLES = [('comp306', 'database management systems', 'buzun'),
 DAYS = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
 INTERVALS = ['10:00-11:00','11:00-12:00','12:00-13:00','13:00-14:00','14:00-15:00','15:00-16:00','16:00-17:00']
 
-#TODO: fill
-COURSE_TUTOR_TUPLES= []
+
+COURSE_TUTOR_TUPLES = [('comp306', 'student1'),
+                       ('comp306', 'student1'),
+                       ('comp306', 'student2'),
+                       ('comp306', 'student3'),
+                       ('comp301', 'student4'),
+                       ('comp302', 'student5'),
+                       ('turk100', 'student6'),
+                       ('turk100', 'student1')]
+
 
 PERIOD_TUPLES = []
 for day in DAYS:

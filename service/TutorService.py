@@ -1,9 +1,11 @@
 from repository import CourseTutorRepository as CTR, UserRepository as UR
 
 def getAllTutors():
-    tutors = UR.getAllTutors()
-    return tutors
+    tutors_tuple = UR.getAllTutors()
+    tutors_list = [tutor[0] for tutor in tutors_tuple]
+    return tutors_list
 
 def getTutorByCourse(courseCode: str):
-    tutors = CTR.getTutorsByCourse(courseCode)
-    return tutors
+    tutors_tuple = CTR.getTutorsByCourse(courseCode)
+    tutors_list = [tutor[0] for tutor in tutors_tuple]
+    return tutors_list

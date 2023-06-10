@@ -56,17 +56,19 @@ def courseExistsByCode(code: str):
 
 def updateHeadTutorToCourse(courseCode: str, headTutorName: str):
     c, conn = Repo.getCursorAndConnection()
-    c.execute(
-        f"UPDATE {DB.courses} "
-        f"SET headtutor_name = {headTutorName}"
-        f"WHERE code = {courseCode}")
+
+    query = f"UPDATE {DB.courses} SET headtutor_name = '{headTutorName}' WHERE code = '{courseCode}'"
+
+    c.execute(query)
     conn.commit()
     conn.close()
 
 def getAllCourses():
     c, conn = Repo.getCursorAndConnection()
     c.execute(
-        f"SELECT course_name"
-        f"FROM {DB.courses}")
-
+        f"SELECT code FROM {DB.courses}")
+    
+    courses = c.fetchall()
     conn.close()
+
+    return courses
