@@ -52,9 +52,11 @@ COURSE_TUPLES = [('comp306', 'database management systems', 'buzun'),
                  ('acwr101', 'academic writing', None)]
 
 
-DAYS = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
+DAYS = ['monday','tuesday']
 INTERVALS = ['10:00-11:00','11:00-12:00','12:00-13:00','13:00-14:00','14:00-15:00','15:00-16:00','16:00-17:00']
 
+ALL_DAYS = ['monday','tuesday','wednesday','thursday','friday']
+ALL_INTERVALS = ['08:00-09:00', '09:00-10:00', '10:00-11:00','11:00-12:00','12:00-13:00','13:00-14:00','14:00-15:00','15:00-16:00','16:00-17:00']
 
 COURSE_TUTOR_TUPLES = [('comp306', 'student1'),
                        ('comp306', 'student1'),

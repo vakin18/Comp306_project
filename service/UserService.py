@@ -1,5 +1,6 @@
 from flask import render_template, session
 import service.PeriodService as PS
+import service.CourseTutorService as CTS
 import repository.UserRepository as UR
 from constants import UserModel, Password
 
@@ -11,7 +12,7 @@ def initializeUserTable():
 def createUser(username: str, password: str, role: str):
     UR.createUser(username, password, role)
 
-def createTutor(username: str):
+def createTutor(username: str, courses):
     user_exists = UR.userExistsByUsername(username)
     if not user_exists:
         #TODO: handle error
@@ -19,10 +20,26 @@ def createTutor(username: str):
             print("Cannot create tutor because user does not exists.")
         return
     
+    isTutor = UR.isTutorByUsername(username)
+    if isTutor:
+        if DEBUG:
+            print("This is already a tutor.")
+        return
+    
     UR.createTutor(username)
+
+    for course in courses:
+        CTS.createCourseTutor(course, username)
+
+
 
 def getUserByUsername(username: str):
     return UR.getUserByUsername(username)
+
+def getAllStudents():
+    student_tuples = UR.getAllStudents()
+    student_list = [student[0] for student in student_tuples]
+    return student_list
 
 def userExistsByUsername(username: str):
     return UR.userExistsByUsername(username)
@@ -31,28 +48,30 @@ def isTutorByUsername(username: str):
     return UR.isTutorByUsername(username)
 
 def login(username: str, password: str):
-        user_exists = UR.userExistsByUsername(username)
+    success = False
+    user_exists = UR.userExistsByUsername(username)
 
-        if not user_exists:
-            error_message = f"There is no user with this username."
-            return render_template("opening_screen.html", error_message=error_message)
+    if not user_exists:
+        error_message = f"There is no user with this username."
+        return success, error_message
 
-        user = UR.getUserByUsername(username)
-        is_password_correct = UR.check_password(user, password)
+    user = UR.getUserByUsername(username)
+    is_password_correct = UR.check_password(user, password)
 
-        if is_password_correct:
-            # Redirect to dashboard if user already exists
-            role = user[UserModel.role]
-            session["username"] = username
-            session["role"] = role
+    if is_password_correct:
+        # Redirect to dashboard if user already exists
+        role = user[UserModel.role]
+        session["username"] = username
+        session["role"] = role
 
-            periods = PS.getAllPeriods()
-            period_strings = PS.periodToString(periods)
-            return render_template("dashboard.html", username=username, role=role, periods=period_strings)
+        periods = PS.getAllPeriods()
+        period_strings = PS.periodToString(periods)
+        success = True
+        return success, ""
 
-        else:
-            error_message = f"Incorrect password."
-            return render_template("opening_screen.html", error_message=error_message)
+    else:
+        error_message = f"Incorrect password."
+        return success, error_message
         
 def signup(username: str, email: str, password: str, role: str):
     is_valid, error_template = validate_credentials(username, password)

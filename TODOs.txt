@@ -7,6 +7,9 @@ assignCourse() tarzı bi method
 tutor-course TABLE
 tp_id-tutor-period TABLE: many-to-many
 tp_id-cubicle TABLE: many-to-1
+tutor'ın course'larını delete etme opsiyonu eklencek
+    delete ederken 0 kalırsa bunu handle et (ya tutor'dan sil, ya da kaldırmayı onaylama)
+tutor'ların username field'ını combobox'a çevir
 
 tutor-period için kısıtlama -> max 3 tane assign olabilir
 

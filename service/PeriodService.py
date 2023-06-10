@@ -20,3 +20,12 @@ def stringToPeriod(period_strings):
         periods.append((day, interval))
 
     return periods
+
+def createPeriod(day, interval):
+    period_exists = PR.periodExists(day, interval)
+    if period_exists:
+        # TODO: Handle
+        print("This period already exists. Cannot create")
+        return
+    
+    PR.createPeriod(day, interval)

@@ -6,8 +6,8 @@ def initializePeriodTable():
 
     query = f'''CREATE TABLE IF NOT EXISTS {DB.periods}(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    day VARCHAR(10) CHECK (day IN ("monday","tuesday","wednesday","thursday","friday","saturday","sunday")),
-    interval VARCHAR(12) CHECK (interval IN ("10:00-11:00","11:00-12:00","12:00-13:00","13:00-14:00","14:00-15:00","15:00-16:00","16:00-17:00")));'''
+    day VARCHAR(10) CHECK (day IN ("monday","tuesday","wednesday","thursday","friday")),
+    interval VARCHAR(12) CHECK (interval IN ("08:00-09:00", "09:00-10:00", "10:00-11:00","11:00-12:00","12:00-13:00","13:00-14:00","14:00-15:00","15:00-16:00","16:00-17:00")));'''
 
     c.execute(query)
     conn.commit()
