@@ -36,6 +36,15 @@ def initializeTutorTable():
 
     return
 
+def getAllTutors():
+    c, conn = Repo.getCursorAndConnection()
+
+    c.execute(f"SELECT username FROM {DB.tutors})")
+
+    result = c.fetchall()
+    conn.close()
+    return result
+
 def populateUserTable():
     c, conn = Repo.getCursorAndConnection()
 

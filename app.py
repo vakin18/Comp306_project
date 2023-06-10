@@ -64,6 +64,16 @@ def addTutorPeriod():
     return render_template('dashboard.html', username=session.get("username"), role='admin', periods=period_strings)
 
 
+@app.route('/assignHeadTutor', methods=['POST'])
+def addTutorCourse():
+    tutor_username = request.form.get('username')
+    day = request.form.get('day')
+    interval = request.form.get('interval')
+
+    TPS.createTutorPeriod(tutor_username, day, interval)
+    return render_template('dashboard.html', username=session.get("username"), role='admin', Tutors=Tutors_List)
+
+
 
 def get_ip_address():
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:

@@ -53,3 +53,12 @@ def courseExistsByCode(code: str):
     course = getCourseByCode(code)
 
     return not (course is None)
+
+def updateHeadTutorToCourse(courseCode: str, headTutorName: str):
+    c, conn = Repo.getCursorAndConnection()
+    c.execute(
+        f"UPDATE {DB.courses} "
+        f"SET headtutor_name = {headTutorName}"
+        f"WHERE code = {courseCode}")
+    conn.commit()
+    conn.close()

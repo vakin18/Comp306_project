@@ -6,6 +6,7 @@ class DB:
     cubicle = "cubicles_db"
     periods = "periods_db"
     tutor_period = "tutor_period_db"
+    course_tutor = "course_tutor_db"
 
 class UserModel:
     username = 0
@@ -51,6 +52,9 @@ COURSE_TUPLES = [('comp306', 'database management systems', 'buzun'),
 
 DAYS = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
 INTERVALS = ['10:00-11:00','11:00-12:00','12:00-13:00','13:00-14:00','14:00-15:00','15:00-16:00','16:00-17:00']
+
+#TODO: fill
+COURSE_TUTOR_TUPLES= []
 
 PERIOD_TUPLES = []
 for day in DAYS:
