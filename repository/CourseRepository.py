@@ -62,3 +62,11 @@ def updateHeadTutorToCourse(courseCode: str, headTutorName: str):
         f"WHERE code = {courseCode}")
     conn.commit()
     conn.close()
+
+def getAllCourses():
+    c, conn = Repo.getCursorAndConnection()
+    c.execute(
+        f"SELECT course_name"
+        f"FROM {DB.courses}")
+
+    conn.close()

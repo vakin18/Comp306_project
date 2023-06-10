@@ -7,10 +7,10 @@ def initializeCourseTutorTable():
 
     query = f'''CREATE TABLE IF NOT EXISTS {DB.course_tutor}( 
         course_code VARCHAR(50),
-        tutor_name VARCHAR(50)
+        tutor_name VARCHAR(50),
         PRIMARY KEY (course_code, tutor_name),
-        FOREIGN KEY (course_code) REFERENCES {DB.courses}(code)
-        FOREIGN KEY (tutor_name) REFERENCES {DB.tutors}(username));'''
+        FOREIGN KEY (course_code) REFERENCES {DB.courses}(code),
+        FOREIGN KEY (tutor_name) REFERENCES {DB.tutors}(username))'''
 
     c.execute(query)
     conn.commit()
