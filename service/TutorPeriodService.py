@@ -46,6 +46,9 @@ def unassignPeriod(selected_tutor, assigned_period_string):
     day, interval = PS.stringToPeriod([assigned_period_string])[0]
     period_id = PS.getPeriod(day, interval)[PeriodModel.id]
 
-    print(f'selected_tutor: {selected_tutor}, period_id: {period_id}')
     TPR.unassignPeriod(selected_tutor, period_id)
     return
+
+def getTutorPeriod(tutor_username, period_id):
+    tp = TPR.getTutorPeriod(tutor_username, period_id)
+    return tp

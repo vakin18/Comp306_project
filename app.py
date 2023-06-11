@@ -180,13 +180,8 @@ def assignTutorPeriodCubicle():
     selected_period = request.form.get('assinged_period_selection')
     selected_tutor = request.form.get('all_tutors')
 
-    print(f'request form: {request.form}')
-
-
     selected_period_string = PS.stringToPeriod([selected_period])
 
-    print("period string 0: " , selected_period_string[0][0])
-    print("period string 1: " , selected_period_string[0][1])
 
     TPCS.createTutorPeriodCubicle(selected_tutor, selected_period_string[0][0], selected_period_string[0][1], selected_cubicle)
 
@@ -256,7 +251,6 @@ def getCubicle():
     selected_period = request.form.getlist('period_selection')
 
     period = PS.stringToPeriod([selected_period])
-    print(period[0])
     #PS.getPeriod(day, interval)[PeriodModel.id]
     #period_id = period[PeriodModel.id]
 

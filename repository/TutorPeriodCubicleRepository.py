@@ -1,15 +1,17 @@
 import repository.Repository as Repo
 import repository.PeriodRepository as PR
+import service.TutorPeriodService as TPS
 from constants import DB, PeriodModel
 
 def initializeTutorPeriodCubicleTable():
     c, conn = Repo.getCursorAndConnection()
 
     query = f'''CREATE TABLE IF NOT EXISTS {DB.tp_cubicle}(
-    id INTEGER PRIMARY KEY,
+    tp_id INTEGER,
     cubicle_number VARCHAR(10),
+    PRIMARY KEY (tp_id, cubicle_number)
     FOREIGN KEY (cubicle_number) REFERENCES {DB.cubicles}(cubicle_number) ON DELETE CASCADE,
-    FOREIGN KEY (id) REFERENCES {DB.tutor_period}(id) ON DELETE CASCADE
+    FOREIGN KEY (tp_id) REFERENCES {DB.tutor_period}(id) ON DELETE CASCADE
     );'''
 
     c.execute(query)
@@ -35,41 +37,28 @@ def createTutorPeriodCubicle(tutor_username, period_id, cubicle_number):
     c, conn = Repo.getCursorAndConnection()
 
     # gets id from tutor_period
-    c.execute(
-        f"SELECT id FROM {DB.tutor_period} WHERE tutor_username = ? AND period_id = ?",
-        (tutor_username, period_id)
-    )
+    tp = TPS.getTutorPeriod(tutor_username, period_id)
+    tp_id = tp[0]
 
-    id = c.fetchone()
-
-    c.execute(
-        f"INSERT INTO {DB.tp_cubicle} (id, cubicle_number) VALUES (?, ?)",
-        (id, cubicle_number)
-    )
+    query = f"INSERT INTO {DB.tp_cubicle} (tp_id, cubicle_number) VALUES ({tp_id}, {cubicle_number})"
+    c.execute(query)
     conn.commit()
     conn.close()
 
-def getTutorPeriodCubicle(period_id, cubicle_number):
+def getTutorPeriodCubicle(tutor: str, period_id: int, cubicle_number):
+    tp = TPS.getTutorPeriod(tutor, period_id)
+    tp_id = tp[0]
+
     c, conn = Repo.getCursorAndConnection()
-    
-    #gets id from tutor_period
-    c.execute(
-        f"SELECT id FROM {DB.tp_cubicle} WHERE id = ? and cubicle_number = ?", (period_id, cubicle_number))
+    c.execute(f"SELECT * FROM {DB.tp_cubicle} WHERE tp_id = {tp_id} and cubicle_number = '{cubicle_number}'")
 
-    period_id = c.fetchone()
-    print(f'id. {period_id}')
-    c.execute(
-        f"SELECT cubicle_number FROM {DB.tp_cubicle} WHERE id = ?",
-        (period_id)
-    )
-
-    cubicle_number = c.fetchone()
+    tpc = c.fetchone()
 
     conn.close()
-    return cubicle_number
+    return tpc
 
-def tutorPeriodCubicleExists(period_id: int, cubicle_number):
-    tp_cubicle = getTutorPeriodCubicle(period_id, cubicle_number)
+def tutorPeriodCubicleExists(tutor: str, period_id: int, cubicle_number):
+    tp_cubicle = getTutorPeriodCubicle(tutor, period_id, cubicle_number)
 
     return not (tp_cubicle is None)
 
@@ -83,16 +72,8 @@ def getFreeCubicles(period_id):
     c.execute(f"SELECT cubicle_number FROM {DB.cubicles}"
                f" WHERE cubicle_number NOT IN "
                f" (SELECT cubicle_number FROM {DB.tp_cubicle}, {DB.tutor_period}" 
-               f" WHERE {DB.tp_cubicle}.id={DB.tutor_period}.id AND {DB.tutor_period}.period_id='{period_id}') ORDER BY cubicle_number ASC")
+               f" WHERE {DB.tp_cubicle}.tp_id={DB.tutor_period}.id AND {DB.tutor_period}.period_id='{period_id}') ORDER BY cubicle_number ASC")
 
     result = c.fetchall()
     conn.close()
     return result
-
-def unassignPeriod(selected_tutor, assigned_period):
-    c, conn = Repo.getCursorAndConnection()
-    c.execute(f"DELETE FROM {DB.tutor_period} WHERE tutor_username = '{selected_tutor}' and period_id = {assigned_period}")
-
-    conn.commit()
-    conn.close()
-    return
