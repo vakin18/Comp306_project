@@ -14,22 +14,25 @@ def createUser(username: str, password: str, role: str):
 
 def createTutor(username: str, courses):
     user_exists = UR.userExistsByUsername(username)
+    error_message = ""
     if not user_exists:
-        #TODO: handle error
-        if DEBUG:
-            print("Cannot create tutor because user does not exists.")
-        return
+        error_message = "Cannot create tutor because user does not exists."
+        
+        return error_message
     
     isTutor = UR.isTutorByUsername(username)
     if isTutor:
-        if DEBUG:
-            print("This is already a tutor.")
-        return
+
+        error_message = "This is already a tutor."
+        
+        return error_message
     
     UR.createTutor(username)
 
     for course in courses:
         CTS.createCourseTutor(course, username)
+
+    return error_message
 
 
 def getUserByUsername(username: str):

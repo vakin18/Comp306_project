@@ -2,10 +2,12 @@ import repository.CubicleRepository as CR
 
 def createCubicle(cubicle_number: str, location: str):
     cubicle_exists = CR.cubicleExists(cubicle_number)
+
+    error_message = ""
     if cubicle_exists:
-        # TODO: Handle
-        print("This cubicle already exists. Cannot create.")
-        return
+        
+        error_message = "This cubicle already exists. Cannot create."
+        return error_message
     
     CR.createCubicle(cubicle_number, location)
 

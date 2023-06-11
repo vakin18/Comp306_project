@@ -29,10 +29,11 @@ def stringToPeriod(period_strings):
 
 def createPeriod(day, interval):
     period_exists = PR.periodExists(day, interval)
+    error_message = ""
     if period_exists:
-        # TODO: Handle
-        print("This period already exists. Cannot create")
-        return
+        
+        error_message = "This period already exists. Cannot create"
+        return error_message
     
     PR.createPeriod(day, interval)
     return
@@ -47,9 +48,10 @@ def getDayAndInterval(period_id):
 
 def deletePeriodByDayAndInterval(day: str, interval: str):
     period_exists = PR.periodExists(day, interval)
+    error_message = ""
     if not period_exists:
-        # TODO: Handle
-        print("This day-interval period does not exist. Cannot remove")
-        return
+        
+        error_message = "This day-interval period does not exist. Cannot remove"
+        return error_message
     
     PR.deletePeriodByDayAndInterval(day, interval)

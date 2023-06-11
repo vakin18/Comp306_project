@@ -18,12 +18,15 @@ def updateHeadTutorToCourse(courseCode: str, headTutorName: str):
 def deleteCourse(code):
     course_exists = courseExistsByCode(code)
 
+    error_message = ""
     if not course_exists:
-        # TODO: Handle
-        print("This course does not exist. Cannot remove")
-        return
+        
+        error_message = "This course does not exist. Cannot remove"
+        return error_message
     
     CR.deleteCourse(code)
+
+    return error_message
 
 def updateHeadTutorIfNeeded(course_code, tutor_name):
     """

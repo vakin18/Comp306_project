@@ -8,39 +8,46 @@ DEBUG = True
 
 def createTutorPeriodCubicle(tutor, day, interval, cubicle):
     period = PR.getPeriod(day, interval)
+
+    error_message = ""
     if not period:
-        # TODO: handle when period does not exist
-        if DEBUG:
-            print("This period does not exist")
-        return
+        
+
+        error_message = "This period does not exist"
+        
+        return error_message
     period_id = period[PeriodModel.id]
 
     tutor_exists = US.isTutorByUsername(tutor)
     if not tutor_exists:
-        # TODO: handle when tutor does not exist
-        if DEBUG:
-            print("This tutor does not exist")
-        return
+        
+
+        error_message = "This tutor does not exist"
+        
+        return error_message
 
     tutor_period_cubicle_exists = TPCR.tutorPeriodCubicleExists(tutor, period_id, cubicle)
     if tutor_period_cubicle_exists:
-        # TODO: handle when tutor-period already exists
-        if DEBUG:
-            print("This tutor-period-cubicle assignment already exists")
-        return
+        
+
+        error_message = "This tutor-period-cubicle assignment already exists"
+        
+        return error_message
 
     TPCR.createTutorPeriodCubicle(tutor, period_id, cubicle)
-    return
+    return error_message
 
     
 def getFreeCubicles(day, interval):
 
     period = PR.getPeriod(day, interval)
+    error_message = ""
+
     if not period:
-        # TODO: handle when period does not exist
-        if DEBUG:
-            print("This period does not exist")
-        return
+        
+        error_message = "This period does not exist"
+        
+        return error_message
     period_id = period[PeriodModel.id]
 
     cubicles_tuples = TPCR.getFreeCubicles(period_id)
@@ -49,4 +56,4 @@ def getFreeCubicles(day, interval):
 
     
 
-    return cubicle_list
+    return error_message, cubicle_list

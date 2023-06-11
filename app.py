@@ -61,12 +61,13 @@ def addCourse():
 def removeCourse():
     courses = request.form.getlist('course_selection')
 
+    
     for course in courses:
-        CS.deleteCourse(course)
+        error_message = CS.deleteCourse(course)
 
     TS.removeTutorsWithNoCourse()
 
-    return redirect(url_for("dashboard"))
+    return dashboard(error_message=error_message)
 
 
 @app.route('/add-period', methods=['POST'])
@@ -74,9 +75,9 @@ def addPeriod():
     day = request.form.get('day_selection')
     interval = request.form.get('interval_selection')
 
-    PS.createPeriod(day, interval)
+    error_message = PS.createPeriod(day, interval)
 
-    return redirect(url_for("dashboard"))
+    return dashboard(error_message=error_message)
 
 
 @app.route('/remove-period', methods=['POST'])
@@ -85,9 +86,9 @@ def removePeriod():
 
     for day_interval in days_intervals:
         day, interval = PS.stringToPeriod([day_interval])[0]
-        PS.deletePeriodByDayAndInterval(day, interval)
+        error_message = PS.deletePeriodByDayAndInterval(day, interval)
 
-    return redirect(url_for("dashboard"))
+    return dashboard(error_message=error_message)
 
 
 @app.route('/addTutor', methods=['POST'])
@@ -95,9 +96,9 @@ def addTutor():
     username = request.form.get('student_selection')
     courses = request.form.getlist('tutor_course_selection')
 
-    US.createTutor(username, courses)
+    error_message = US.createTutor(username, courses)
 
-    return redirect(url_for("dashboard"))
+    return dashboard(error_message=error_message)
 
 
 
@@ -122,9 +123,9 @@ def addTutorPeriod():
     periods = PS.stringToPeriod(period_strings)
 
     for day, interval in periods:
-        TPS.createTutorPeriod(tutor_username, day, interval)
+        error_message = TPS.createTutorPeriod(tutor_username, day, interval)
 
-    return redirect(url_for("dashboard"))
+    return dashboard(error_message=error_message)
 
 
 
@@ -147,9 +148,10 @@ def unassignCourse():
     assigned_courses = request.form.getlist('course_selection')
 
     for assigned_course in assigned_courses:
-        CTS.unassignCourse(selected_tutor, assigned_course)
+        error_message = CTS.unassignCourse(selected_tutor, assigned_course)
+        
 
-    return dashboard()
+    return dashboard(error_message=error_message)
 
 
 @app.route('/select-tutor-for-period', methods=['GET'])
@@ -170,10 +172,10 @@ def selectTutorPeriodCubicle():
 
     selected_period_string = PS.stringToPeriod([selected_period])
 
-    free_cubicles = TPCS.getFreeCubicles(selected_period_string[0][0], selected_period_string[0][1])
+    error_message, free_cubicles = TPCS.getFreeCubicles(selected_period_string[0][0], selected_period_string[0][1])
 
     return dashboard(selected_tutor=selected_tutor, assigned_periods=assigned_periods,
-                            selected_assigned_period=selected_period.replace(' ', ''), free_cubicles=free_cubicles)
+                            selected_assigned_period=selected_period.replace(' ', ''), free_cubicles=free_cubicles, error_message=error_message)
 
 @app.route('/assign-cubicle', methods=['POST'])
 def assignTutorPeriodCubicle():
@@ -184,9 +186,9 @@ def assignTutorPeriodCubicle():
     selected_period_string = PS.stringToPeriod([selected_period])
 
 
-    TPCS.createTutorPeriodCubicle(selected_tutor, selected_period_string[0][0], selected_period_string[0][1], selected_cubicle)
+    error_message = TPCS.createTutorPeriodCubicle(selected_tutor, selected_period_string[0][0], selected_period_string[0][1], selected_cubicle)
 
-    return redirect(url_for("dashboard"))
+    return dashboard(error_message=error_message)
 
 
 
