@@ -107,9 +107,10 @@ def assignCourse():
     courses = request.form.getlist('course_selection')
 
     for course in courses:
-        CTS.createCourseTutor(course, username)
+        error_message = CTS.createCourseTutor(course, username)
 
-    return redirect(url_for("dashboard"))
+    # return redirect(url_for("dashboard"))
+    return dashboard(error_message=error_message)
 
 
 @app.route('/addTutorPeriod', methods=['POST'])

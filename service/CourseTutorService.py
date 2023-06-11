@@ -6,24 +6,26 @@ from constants import CourseModel
 
 def createCourseTutor(course_code, tutor_name):
     course_exists = CS.courseExistsByCode(course_code)
+    error_message = ""
     if not course_exists:
         # TODO: handle
-        print("This course does not exist. Cannot assign")
-        return
+        error_message = "This course does not exist. Cannot assign"
+        return error_message
     
     tutor_exists = US.isTutorByUsername(tutor_name)
     if not tutor_exists:
         # TODO: handle
-        print("This tutor does not exist. Cannot assign")
-        return
+        error_message = "This tutor does not exist. Cannot assign"
+        return error_message
     
     course_tutor_exists = CTR.courseTutorExists(course_code, tutor_name)
     if course_tutor_exists:
         # TODO: handle
-        print(f"This course is already assigned to {tutor_name}. Cannot assign")
-        return
+        error_message = f"This course is already assigned to {tutor_name}. Cannot assign"
+        return error_message
     
     CTR.createCourseTutor(course_code, tutor_name)
+    return error_message
 
 
 def getCoursesByTutor(tutor_name):
