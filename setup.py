@@ -4,6 +4,7 @@ import repository.PeriodRepository as PR
 import repository.TutorPeriodRepository as TPR
 import repository.CourseTutorRepository as CTR
 import repository.CubicleRepository as CubR
+import repository.TutorPeriodCubicleRepository as TPCR
 
 UR.initializeUserTable()
 UR.initializeTutorTable()
@@ -12,3 +13,4 @@ PR.initializePeriodTable()
 TPR.initializeTutorPeriodTable()
 CTR.initializeCourseTutorTable()
 CubR.initializeCubicleTable()
+TPCR.initializeTutorPeriodCubicleTable()

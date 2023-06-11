@@ -7,6 +7,7 @@ class DB:
     periods = "periods_db"
     tutor_period = "tutor_period_db"
     course_tutor = "course_tutor_db"
+    tp_cubicle = "tp_cubicle_db"
 
 class UserModel:
     username = 0
@@ -77,4 +78,14 @@ for day in DAYS:
     for interval in INTERVALS:
         PERIOD_TUPLES.append((day, interval))
 
-CUBICLE_TUPLES = []
+CUBICLE_TUPLES = [('1', 'Kolt Office'),
+                  ('2', 'Kolt Office'),
+                  ('3', 'Kolt Office'),
+                  ('4', 'Kolt Office'),
+                  ('5', 'Kolt Office'),
+                  ('6', 'Kolt Office'),
+                  ('7', 'Kolt Office'),
+                  ('8', 'Kolt Office'),
+                  ('9', 'Kolt Office'),
+                  ('10', 'Kolt Office')]
+

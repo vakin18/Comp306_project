@@ -256,6 +256,51 @@
         </form>
 
     </div>
+
+    <div class="buttons">
+        <form action="/select-tutor-for-period" method="GET">
+            <label for="tutor">Tutor:</label>
+            <select id="all_tutors" name="all_tutors">
+                {% if all_tutors %}
+                {% for tutor in all_tutors %}
+                <option value="{{tutor}}" {% if selected_tutor and tutor==selected_tutor %} selected {% endif %}> {{tutor}} </option>
+                {% endfor %}
+                {% endif %}
+            </select>
+            <button>Get periods</button>
+        </form>
+
+        <form action="/select-cubicle" method="POST">
+            <label for="period_selection">Periods:</label>
+            <select id="period_selection" name="period_selection" class="selectpicker"
+                aria-label="size 3 select example">
+                {% for assigned_period in assigned_periods %}
+                <option value="{{assigned_period}}">{{assigned_period}}</option>
+                {% endfor %}
+            </select>
+
+            <input type="hidden" id="all_tutors" name="all_tutors" value={{selected_tutor}}>
+            <button>Get Cubicles</button>
+        </form>
+
+        <form action="/assign-cubicle" method="POST">
+            <label for="cubicle-selection">Cubicles:</label>
+            <select id="cubicle-selection" name="cubicle-selection" class="selectpicker"
+                aria-label="size 3 select example">
+                {% for free_cubicle in free_cubicles %}
+                <option value="{{free_cubicle}}">{{free_cubicle}}</option>
+                {% endfor %}
+            </select>
+
+            <input type="hidden" id="period_selection" name="period_selection" value={{selected_period}}>
+            <input type="hidden" id="all_tutors" name="all_tutors" value={{selected_tutor}}>
+            <button>Assign Cubicle</button>
+        </form>
+
+
+        
+    </div>
+
     {% endif %}
 
 
