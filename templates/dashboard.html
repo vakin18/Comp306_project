@@ -319,9 +319,9 @@
             <button>Get periods</button>
         </form>
 
-        <form action="/select-cubicle" method="POST">
-            <label for="period_selection">Periods:</label>
-            <select id="period_selection" name="period_selection" class="selectpicker"
+        <form action="/select-cubicle" method="GET">
+            <label for="assinged_period_selection">Periods:</label>
+            <select id="assinged_period_selection" name="assinged_period_selection" class="selectpicker"
                 aria-label="size 3 select example">
                 {% for assigned_period in assigned_periods %}
                 <option value="{{assigned_period}}">{{assigned_period}}</option>
@@ -341,7 +341,7 @@
                 {% endfor %}
             </select>
 
-            <input type="hidden" id="period_selection" name="period_selection" value={{selected_period}}>
+            <input type="hidden" id="assinged_period_selection" name="assinged_period_selection" value={{selected_assigned_period}}>
             <input type="hidden" id="all_tutors" name="all_tutors" value={{selected_tutor}}>
             <button>Assign Cubicle</button>
         </form>

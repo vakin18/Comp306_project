@@ -156,60 +156,39 @@ def selectTutorForPeriod():
     selected_tutor = request.args.get("all_tutors")
 
     assigned_periods = TPS.getPeriodsByTutor(selected_tutor)
-
+    
     return dashboard(selected_tutor=selected_tutor, assigned_periods=assigned_periods)
 
 
-@app.route('/select-cubicle', methods=['POST'])
+@app.route('/select-cubicle', methods=['GET'])
 def selectTutorPeriodCubicle():
-    selected_period = request.form.get('period_selection')
+    selected_period = request.args.get('assinged_period_selection')
+    selected_tutor = request.args.get('all_tutors')
 
-    
-    selected_tutor = request.form.get('all_tutors')
-
-    periods = PS.getAllPeriods()
-    period_strings = PS.periodToString(periods)
-    all_courses = CS.getAllCourses()
-    all_tutors = TS.getAllTutors()
     assigned_periods = TPS.getPeriodsByTutor(selected_tutor)
-
-    
 
     selected_period_string = PS.stringToPeriod([selected_period])
 
-    print("selected_period: !!!!!!", selected_period)
-
- 
-
     free_cubicles = TPCS.getFreeCubicles(selected_period_string[0][0], selected_period_string[0][1])
 
-    print(free_cubicles)
-
-    return render_template('dashboard.html', username=session.get("username"), role='admin', periods=period_strings, 
-                           courses=all_courses, selected_tutor=selected_tutor, assigned_periods=assigned_periods,
-                           all_tutors=all_tutors, selected_period=selected_period, free_cubicles=free_cubicles)
+    return dashboard(selected_tutor=selected_tutor, assigned_periods=assigned_periods,
+                            selected_assigned_period=selected_period.replace(' ', ''), free_cubicles=free_cubicles)
 
 @app.route('/assign-cubicle', methods=['POST'])
 def assignTutorPeriodCubicle():
     selected_cubicle = request.form.get('cubicle-selection')
-    selected_period = request.form.get('period_selection')
+    selected_period = request.form.get('assinged_period_selection')
     selected_tutor = request.form.get('all_tutors')
 
-    
-    print("tutor: " , selected_tutor)
-    print("cubicle: " , selected_cubicle)
-    print("selected_period: ", selected_period)
+    print(f'request form: {request.form}')
 
-    for k,v in request.form.items():
-        print(k, v)
-    
 
     selected_period_string = PS.stringToPeriod([selected_period])
 
     print("period string 0: " , selected_period_string[0][0])
     print("period string 1: " , selected_period_string[0][1])
 
-    TPS.createTutorPeriodCubicle(selected_tutor, selected_period_string[0][0], selected_period_string[0][1], selected_cubicle)
+    TPCS.createTutorPeriodCubicle(selected_tutor, selected_period_string[0][0], selected_period_string[0][1], selected_cubicle)
 
     return redirect(url_for("dashboard"))
 

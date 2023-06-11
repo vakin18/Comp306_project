@@ -49,18 +49,18 @@ def createTutorPeriodCubicle(tutor_username, period_id, cubicle_number):
     conn.commit()
     conn.close()
 
-def getTutorPeriodCubicle(id, cubicle_number):
+def getTutorPeriodCubicle(period_id, cubicle_number):
     c, conn = Repo.getCursorAndConnection()
     
     #gets id from tutor_period
     c.execute(
-        f"SELECT id FROM {DB.tp_cubicle} WHERE id = ? and cubicle_number = ?", (id, cubicle_number))
+        f"SELECT id FROM {DB.tp_cubicle} WHERE id = ? and cubicle_number = ?", (period_id, cubicle_number))
 
-    id = c.fetchone()
-
+    period_id = c.fetchone()
+    print(f'id. {period_id}')
     c.execute(
         f"SELECT cubicle_number FROM {DB.tp_cubicle} WHERE id = ?",
-        (id)
+        (period_id)
     )
 
     cubicle_number = c.fetchone()
@@ -68,8 +68,8 @@ def getTutorPeriodCubicle(id, cubicle_number):
     conn.close()
     return cubicle_number
 
-def tutorPeriodCubicleExists(id, cubicle_number):
-    tp_cubicle = getTutorPeriodCubicle(id, cubicle_number)
+def tutorPeriodCubicleExists(period_id: int, cubicle_number):
+    tp_cubicle = getTutorPeriodCubicle(period_id, cubicle_number)
 
     return not (tp_cubicle is None)
 

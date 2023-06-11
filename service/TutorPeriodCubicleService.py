@@ -22,7 +22,8 @@ def createTutorPeriodCubicle(tutor, day, interval, cubicle):
             print("This tutor does not exist")
         return
 
-    tutor_period_cubicle_exists = TPCR.tutorPeriodCubicleExists(period_id)
+    print(f'period_id : {period_id}')
+    tutor_period_cubicle_exists = TPCR.tutorPeriodCubicleExists(period_id, cubicle)
     if tutor_period_cubicle_exists:
         # TODO: handle when tutor-period already exists
         if DEBUG:

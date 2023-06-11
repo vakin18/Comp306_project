@@ -22,7 +22,7 @@ def stringToPeriod(period_strings):
     # Expects day, interval
     periods = []
     for period_string in period_strings:
-        day, interval = period_string.split(', ')
+        day, interval = period_string.replace(' ', '').split(',')
         periods.append((day, interval))
 
     return periods
