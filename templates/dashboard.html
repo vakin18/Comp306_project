@@ -28,6 +28,55 @@
         </form>
     </div>
 
+    <br>
+
+    <div class="buttons">
+
+        <form action="/selectCourseStudent" method="GET">
+            <label for="course_selection_stu">Course:</label>
+            <select id="course_selection_stu" name="course_selection_stu">
+                {% if courses %}
+                {% for course in courses %}
+                <option value="{{course}}" {% if selected_course and course==selected_course %} selected {% endif %}>
+                    {{course}} </option>
+                {% endfor %}
+                {% endif %}
+            </select>
+            <button>Get tutors</button>
+        </form>
+
+        <form action="/getPeriodsOfTutorStudent" method="POST">
+            <label for="tutor_selection_stu">Tutors:</label>
+            <select id="tutor_selection_stu" name="tutor_selection_stu">
+                {% if tutors %}
+                {% for tutor in tutors %}
+                <option value="{{tutor}}">{{tutor}}</option>
+                {% endfor %}
+                {% endif %}
+            </select>
+            <input type="hidden" id="course_selection_stu" name="course_selection_stu"
+                value={{selected_course}}>
+            <button>Get Periods</button>
+        </form>
+
+        <form action="/getPeriodsOfTutorStudent" method="POST">
+            <label for="period_selection_stu">Periods:</label>
+            <select id="period_selection_stu" name="period_selection_stu">
+                {% if tutorperiods %}
+                {% for period in tutorperiods %}
+                <option value="{{period}}">{{period}}</option>
+                {% endfor %}
+                {% endif %}
+            </select>
+            <input type="hidden" id="course_selection_stu" name="course_selection_stu"
+                value={{selected_course}}>
+            <input type="hidden" id="tutor_selection_stu" name="tutor_selection_stu"
+                value={{selected_tutor}}>
+            <button>Get Cubicle</button>
+        </form>
+
+    </div>
+
     {% if role == "tutor" %}
     <br>
     <div class="buttons">

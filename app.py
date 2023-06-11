@@ -28,7 +28,7 @@ def login():
     success, error_message = US.login(username, password)
     if success:
         return redirect(url_for("dashboard"))
-    
+
     return render_template("opening_screen.html", error_message=error_message)
 
 
@@ -116,7 +116,7 @@ def assignCourse():
 def addTutorPeriod():
     tutor_username = request.form.get('all_tutors')
     period_strings = request.form.getlist('period_selection')
-  
+
 
     periods = PS.stringToPeriod(period_strings)
 
@@ -136,10 +136,9 @@ def selectTutor():
     all_courses = CS.getAllCourses()
     all_tutors = TS.getAllTutors()
     assigned_courses = CTS.getCoursesByTutor(selected_tutor)
-    
-    return render_template('dashboard.html', username=session.get("username"), role='admin', periods=period_strings, 
-                           courses=all_courses, selected_tutor=selected_tutor, assigned_courses=assigned_courses,
-                           all_tutors=all_tutors)
+
+    return dashboard(selected_tutor=selected_tutor, assigned_courses=assigned_courses)
+
 
 @app.route('/unassign-course', methods=['POST'])
 def unassignCourse():
@@ -152,21 +151,13 @@ def unassignCourse():
     return dashboard()
 
 
-
-
 @app.route('/select-tutor-for-period', methods=['GET'])
 def selectTutorForPeriod():
     selected_tutor = request.args.get("all_tutors")
 
-    periods = PS.getAllPeriods()
-    period_strings = PS.periodToString(periods)
-    all_courses = CS.getAllCourses()
-    all_tutors = TS.getAllTutors()
     assigned_periods = TPS.getPeriodsByTutor(selected_tutor)
-    
-    return render_template('dashboard.html', username=session.get("username"), role='admin', periods=period_strings, 
-                           courses=all_courses, selected_tutor=selected_tutor, assigned_periods=assigned_periods,
-                           all_tutors=all_tutors)
+
+    return dashboard(selected_tutor=selected_tutor, assigned_periods=assigned_periods)
 
 
 @app.route('/select-cubicle', methods=['POST'])
@@ -244,13 +235,9 @@ def unassignPeriod():
 @app.route('/selectCourse', methods=['GET'])
 def addTutorCourse():
     selected_course = request.args.get("head_tutor_course_selection")
-
-    periods = PS.getAllPeriods()
-    period_strings = PS.periodToString(periods)
-    courses = CS.getAllCourses()
     tutors = TS.getTutorByCourse(selected_course)
-    
-    return render_template('dashboard.html', username=session.get("username"), role='admin', periods=period_strings, courses=courses, tutors=tutors, selected_course=selected_course)
+
+    return dashboard(tutors=tutors, selected_course=selected_course)
 
 @app.route('/assingHeadTutor', methods=['POST'])
 def assignHeadTutor():
@@ -261,23 +248,60 @@ def assignHeadTutor():
     CS.updateHeadTutorToCourse(selected_course, head_tutor)
     return dashboard()
 
+
+
+@app.route('/selectCourseStudent', methods=['GET'])
+def getCourseTutors():
+    selected_course = request.args.get("course_selection_stu")
+    tutors = TS.getTutorByCourse(selected_course)
+
+    return dashboard(tutors=tutors, selected_course=selected_course)
+
+@app.route('/getPeriodsOfTutorStudent', methods=['POST'])
+def getTutorPeriods():
+    selected_course = request.form.get("course_selection_stu")
+    tutors = TS.getTutorByCourse(selected_course)
+    selected_tutor = request.form.get("tutor_selection_stu")
+
+    assigned_periods = TPS.getPeriodsByTutor(selected_tutor)
+
+    return dashboard(selected_tutor=selected_tutor, selected_course=selected_course, tutors=tutors, tutorperiods=assigned_periods)
+
+@app.route('/getCubicle', methods=['POST'])
+def getCubicle():
+    selected_course = request.form.get("course_selection_stu")
+    tutors = TS.getTutorByCourse(selected_course)
+    selected_tutor = request.form.get("tutor_selection_stu")
+    assigned_periods = TPS.getPeriodsByTutor(selected_tutor)
+
+    selected_period = request.form.getlist('period_selection')
+
+    period = PS.stringToPeriod([selected_period])
+    print(period[0])
+    #PS.getPeriod(day, interval)[PeriodModel.id]
+    #period_id = period[PeriodModel.id]
+
+    return dashboard()
+
+
+
+
 @app.route('/dashboard', methods=['GET'])
-def dashboard():
+def dashboard(**kwargs):
     role = session.get("role")
 
     if role == "admin":
-        periods = PS.getAllPeriods() # id,day,interval
-        periods = [period[1:3] for period in periods] #day, interval
+        periods = PS.getAllPeriods()  # id,day,interval
+        periods = [period[1:3] for period in periods]  # day, interval
         period_strings = PS.periodToString(periods)
         students = US.getAllStudents()
         courses = CS.getAllCourses()
         tutors = TS.getAllTutors()
         all_days, all_intervals = ALL_DAYS, ALL_INTERVALS
 
-        return render_template('dashboard.html', username=session.get("username"), role=role, 
-                               periods=period_strings, courses=courses, students=students, 
-                               all_days=all_days, all_intervals=all_intervals, all_tutors=tutors)
-    
+        return render_template('dashboard.html', username=session.get("username"), role=role,
+                               periods=period_strings, courses=courses, students=students,
+                               all_days=all_days, all_intervals=all_intervals, all_tutors=tutors, **kwargs)
 
     return render_template('dashboard.html', username=session.get("username"), role=role)
 
@@ -290,7 +314,7 @@ def get_ip_address():
     return ip_address
 
 if __name__ == '__main__':
-    setup
+    setup  # noqa
     # Setting the host to the IP address of the device #
     host_address = get_ip_address()
     app.run(host=host_address, debug=True, port=5000)
