@@ -26,11 +26,11 @@ def createTutorPeriodCubicle(tutor, day, interval, cubicle):
         
         return error_message
 
-    tutor_period_cubicle_exists = TPCR.tutorPeriodCubicleExists(tutor, period_id, cubicle)
+    tutor_period_cubicle_exists = TPCR.tutorPeriodCubicleExists(tutor, period_id)
     if tutor_period_cubicle_exists:
         
 
-        error_message = "This tutor-period-cubicle assignment already exists"
+        error_message = "This tutor-period assignment already exists"
         
         return error_message
 
