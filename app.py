@@ -271,20 +271,27 @@ def getCubicle():
 def dashboard(**kwargs):
     role = session.get("role")
 
-    if role == "admin":
-        periods = PS.getAllPeriods()  # id,day,interval
-        periods = [period[1:3] for period in periods]  # day, interval
-        period_strings = PS.periodToString(periods)
-        students = US.getAllStudents()
-        courses = CS.getAllCourses()
-        tutors = TS.getAllTutors()
-        all_days, all_intervals = ALL_DAYS, ALL_INTERVALS
+    periods = PS.getAllPeriods()  # id,day,interval
+    periods = [period[1:3] for period in periods]  # day, interval
+    period_strings = PS.periodToString(periods)
+    students = US.getAllStudents()
+    courses = CS.getAllCourses()
+    tutors = TS.getAllTutors()
+    all_days, all_intervals = ALL_DAYS, ALL_INTERVALS
 
-        return render_template('dashboard.html', username=session.get("username"), role=role,
-                               periods=period_strings, courses=courses, students=students,
-                               all_days=all_days, all_intervals=all_intervals, all_tutors=tutors, **kwargs)
+    selected_tutor = session.get("username")
+    isTutor = US.isTutorByUsername(selected_tutor)
+    assigned_periods = TPS.getPeriodsByTutor(selected_tutor)
+    periodsOfTutor = PS.stringToPeriod(assigned_periods)
+    assigned_courses = CTS.getCoursesByTutor(selected_tutor)
+    cubiclesOfTutor = []
+    for period in periodsOfTutor:
+        cubicle = TPCS.getCubicleByTutorPeriod(selected_tutor, period[0], period[1])
+        cubiclesOfTutor.append((period, cubicle))
 
-    return render_template('dashboard.html', username=session.get("username"), role=role)
+    return render_template('dashboard.html', username=session.get("username"), role=role, isTutor=isTutor,assigned_courses=assigned_courses, cubiclesOfTutor=cubiclesOfTutor,
+                           periods=period_strings, courses=courses, students=students,
+                           all_days=all_days, all_intervals=all_intervals, all_tutors=tutors, **kwargs)
 
 
 

@@ -24,7 +24,7 @@
 
     <div class="buttons">
         <form action="/feature1" method="GET">
-            <button>Both admin and tutor should see this</button>
+            <button>Both admin and student should see this</button>
         </form>
     </div>
 
@@ -88,12 +88,24 @@
 
     </div>
 
-    {% if role == "tutor" %}
+    {% if isTutor %}
     <br>
     <div class="buttons">
         <form action="/feature2" method="GET">
             <button>Only tutor should see this</button>
         </form>
+    </div>
+
+    <div class="tutor-info">
+        <h4>Tutor Information:</h4>
+        <p><strong>Username:</strong> {{ username }}</p>
+        <p><strong>Courses:</strong> {% for course in assigned_courses %}{{ course }} {% if not loop.last %} | {% endif %} {% endfor %}</p>
+        {% for period, cubicle_list in cubiclesOfTutor %}
+        <p>
+            <strong>Period:</strong> {{ period[0] }} {{ period[1] }} - <strong>Cubicle:</strong>
+            {% for cubicle in cubicle_list %}{{ cubicle }}{% if not loop.last %}, {% endif %}{% endfor %}
+        </p>
+        {% endfor %}
     </div>
     {% endif %}
 
