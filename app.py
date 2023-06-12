@@ -1,4 +1,6 @@
-from flask import Flask, request, render_template, session, url_for, redirect
+import os
+
+from flask import Flask, request, render_template, session, url_for, redirect, send_from_directory
 import setup
 import socket
 import service.UserService as US
@@ -341,6 +343,11 @@ def get_ip_address():
         s.connect(('8.8.8.8', 80))
         ip_address = s.getsockname()[0]
     return ip_address
+
+@app.route('/images/<path:filename>')  # Route to serve the images
+def serve_image(filename):
+    app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'images')
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
     setup  # noqa

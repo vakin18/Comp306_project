@@ -20,13 +20,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"
         integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <h1>Welcome {{username}}. This is the dashboard for {{role}}s</h1>
-
-    <div class="buttons">
-        <form action="/feature1" method="GET">
-            <button disabled>Both admin and student should see this</button>
-        </form>
-    </div>
+    <h1 class="welcome">Welcome {{username}}. This is the dashboard for {{role}}s</h1>
 
     <br>
 
@@ -42,7 +36,7 @@
                 {% endfor %}
                 {% endif %}
             </select>
-            <button>Get tutors</button>
+            <button class="btn">Get tutors</button>
         </form>
 
         <form action="/getPeriodsOfTutorStudent" method="POST">
@@ -56,7 +50,7 @@
             </select>
             <input type="hidden" id="course_selection_stu" name="course_selection_stu"
                 value={{selected_course}}>
-            <button>Get Periods</button>
+            <button class="btn">Get Periods</button>
         </form>
 
         <form action="/getCubicle" method="POST">
@@ -72,7 +66,7 @@
                 value={{selected_course}}>
             <input type="hidden" id="tutor_selection_stu" name="tutor_selection_stu"
                 value={{selected_tutor}}>
-            <button>Get Cubicle</button>
+            <button class="btn">Get Cubicle</button>
         </form>
 
         <div>
@@ -90,12 +84,6 @@
 
     {% if isTutor and isHeadTutor %}
     <br>
-    <div class="buttons">
-        <form action="/feature2" method="GET">
-            <button disabled>Only tutors should see this</button>
-        </form>
-    </div>
-
     <div class="tutor-info">
         <h4>Tutor Information:</h4>
         <p><strong>Username:</strong> {{ username }}</p>
@@ -111,13 +99,7 @@
 
     {% if isHeadTutor %}
     <br>
-    <div class="buttons">
-        <form action="/feature2" method="GET">
-            <button disabled>Only head tutors should see this</button>
-        </form>
-    </div>
-
-    <h4>Head Tutor Information:</h4>
+    <h4>Tutor Information for Head Tutor:</h4>
 
     {% for course, tutors in coursesWithItsTutors %}
     <p><strong>Course Code:</strong> {{ course }}</p>
@@ -140,7 +122,7 @@
             <label for="new_course_name">Name:</label>
             <input type="text" id="new_course_name" name="new_course_name" placeholder="Enter course name" required>
 
-            <button>Add new course</button>
+            <button class="btn">Add new course</button>
         </form>
 
         <div class="buttons">    
@@ -153,7 +135,7 @@
                     {% endfor %}
                 </select>
     
-                <button>Remove course</button>
+                <button class="btn">Remove course</button>
             </form>
         </div>
 
@@ -176,7 +158,7 @@
                 {% endif %}
             </select>
 
-            <button>Add new period</button>
+            <button class="btn">Add new period</button>
         </form>
 
         <div class="buttons">    
@@ -189,7 +171,7 @@
                     {% endfor %}
                 </select>
     
-                <button>Remove period</button>
+                <button class="btn">Remove period</button>
             </form>
         </div>
 
@@ -213,7 +195,7 @@
                 {% endif %}
             </select>
 
-            <button>Add new tutor</button>
+            <button class="btn">Add new tutor</button>
         </form>
     </div>
 
@@ -235,7 +217,7 @@
                 {% endfor %}
             </select>
 
-            <button>Assign course to tutor</button>
+            <button class="btn">Assign course to tutor</button>
         </form>
     </div>
 
@@ -249,7 +231,7 @@
                 {% endfor %}
                 {% endif %}
             </select>
-            <button>Get courses</button>
+            <button class="btn">Get courses</button>
         </form>
 
         <form action="/unassign-course" method="POST">
@@ -285,7 +267,7 @@
             </select>
 
 
-            <button>Assign period to tutor</button>
+            <button class="btn">Assign period to tutor</button>
         </form>
     </div>
 
@@ -300,7 +282,7 @@
                 {% endfor %}
                 {% endif %}
             </select>
-            <button>Get periods</button>
+            <button class="btn">Get periods</button>
         </form>
 
         <form action="/unassign-period" method="POST">
@@ -313,7 +295,7 @@
             </select>
 
             <input type="hidden" id="all_tutors" name="all_tutors" value={{selected_tutor}}>
-            <button>Unassign period from tutor</button>
+            <button class="btn" style="width:43%">Unassign period from tutor</button>
         </form>
     </div>
 
@@ -331,7 +313,7 @@
                 {% endfor %}
                 {% endif %}
             </select>
-            <button>Get tutors</button>
+            <button class="btn">Get tutors</button>
         </form>
 
         <form action="/assingHeadTutor" method="POST">
@@ -345,7 +327,7 @@
             </select>
             <input type="hidden" id="head_tutor_course_selection" name="head_tutor_course_selection"
                 value={{selected_course}}>
-            <button>Assign Head Tutor</button>
+            <button class="btn">Assign Head Tutor</button>
         </form>
 
     </div>
@@ -360,7 +342,7 @@
                 {% endfor %}
                 {% endif %}
             </select>
-            <button>Get periods</button>
+            <button class="btn">Get periods</button>
         </form>
 
         <form action="/select-cubicle" method="GET">
@@ -373,7 +355,7 @@
             </select>
 
             <input type="hidden" id="all_tutors" name="all_tutors" value={{selected_tutor}}>
-            <button>Get Cubicles</button>
+            <button class="btn">Get Cubicles</button>
         </form>
 
         <form action="/assign-cubicle" method="POST">
@@ -387,7 +369,7 @@
 
             <input type="hidden" id="assinged_period_selection" name="assinged_period_selection" value={{selected_assigned_period}}>
             <input type="hidden" id="all_tutors" name="all_tutors" value={{selected_tutor}}>
-            <button>Assign Cubicle</button>
+            <button class="btn">Assign Cubicle</button>
         </form>
 
 
@@ -433,7 +415,7 @@
     <br>
     <div class="buttons">
         <form action="/logout" method="POST">
-            <button>Logout</button>
+            <button class="btn">Logout</button>
         </form>
     </div>
 

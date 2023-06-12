@@ -4,46 +4,158 @@
   <head>
     <title>Welcome to KOLT Tutor</title>
   </head>
+  <style>
+
+body{
+  background-image: url('images/ku23.jpeg');
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5); /* Adjust the opacity value (0.5) */
+}
+
+.Welcome {
+    font-family: "Times New Roman", Times, serif;
+
+  
+}
+
+  .logindiv {
+    text-align: center;
+    
+
+}
+.wrapper{
+  position: relative;
+  margin-top: 50px;
+  text-align: center;
+  border-radius: 10px;
+  margin-left: 20%;
+  height:350px;
+  width: 60%;
+  justify-content: center;
+  background-color: white;
+  box-shadow: 0px 16px 32px 0px rgba(0,0,0,0.2);
+}
+
+
+.signupdiv {
+    text-align: center;
+
+}
+.kuphoto{
+    position:absolute;
+    text-align: center;
+    zoom: 0.5;
+    width: 50%;
+    margin-top: 150px;
+    margin-left: 25%;
+    
+}
+.loginbut{
+  background-color: white;
+  margin-top: 10px;
+  width: 200px;
+  border: 2px solid grey;
+  border-radius: 5px;
+}
+.loginbut:hover{
+  border: 2px solid red;
+
+}
+.logindiv .username{
+  height: 15px
+}
+.signupbut{
+  background-color: white;
+  margin-top: 10px;
+  width: 200px;
+  border: 2px solid grey;
+  border-radius: 5px;
+
+
+}
+.signupbut:hover{
+  border: 2px solid red;
+}
+.kuphoto_top{
+  position: absolute;
+  top: 5px;
+  left: 35%;
+  width: 200px;
+  height: 55px;
+}
+
+.Wh1{
+  position: relative;
+  top: 5px;
+  left: 13%;
+
+}
+
+
+
+  </style>
 
   <body>
-    <h1>Welcome to KOLT Tutor</h1>
+    
+    <div class="wrapper">
+      <div class="Welcome">
+        <h1 class="Wh1">|     KOLT Tutor</h1>
+        <img class="kuphoto_top" src="images\koc2.png" >
 
-  <form action="/login" autocomplete="off" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" placeholder="Enter username" required>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" placeholder="Enter password" required>
-    <br>
-    <input id="login" type="submit" value="Login">
-  </form>
+      </div>
+    
+    
+    <div class="logindiv">
+      <h2>Login</h2>
+      <form action="/login" autocomplete="off" method="post">
+        <label for="username">Username:</label>
+        <input class= "username" type="text" id="username" name="username" placeholder="Enter username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter password" required>
+        <br>
+        <input class="loginbut" id="login" type="submit" value="Login">
+      </form>
+    </div>
 
   <br>
   <br>
+    <div class="signupdiv">
+      <h2>Signup</h2>
+      <form action="/signup" autocomplete="off" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter username" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Enter email" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter password" required>
+        <label for="role">Role</label>
+        <select id="role_selection" name="role_selection">
+          <option value="student">Student</option>
+          <option value="admin">Admin</option>
+        </select>
+        <br>
+        <input class="signupbut" id="signup" type="submit" value="Signup">
+      </form>
+    </div>
+  </div>
 
-  <form action="/signup" autocomplete="off" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" placeholder="Enter username" required>
-    <label for="email">Email:</label>
-    <input type="email" id="eömail" name="email" placeholder="Enter email" required>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" placeholder="Enter password" required>
-    <label for="role">Role</label>
-    <select id="role_selection" name="role_selection">
-      <option value="student">Student</option>
-      <option value="admin">Admin</option>
-    </select>
-    <br>
-    <input id="signup" type="submit" value="Signup">
-  </form>
+    <div class="kuphoto">
+      <img class="demo cursor" src="images\koc2.png">
+    </div>
+
 
   </body>
 
-  {% if error_message %}
-  <p class="error-message">{{ error_message }}</p>
-  {% endif %}
 
-  {% if role %}
-  <p class="success-message">This message is temporary: {{ role }}</p>
-  {% endif %}
 
 </html>
