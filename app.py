@@ -301,13 +301,19 @@ def dashboard(**kwargs):
     isTutor = US.isTutorByUsername(selected_tutor)
     assigned_periods = TPS.getPeriodsByTutor(selected_tutor)
     periodsOfTutor = PS.stringToPeriod(assigned_periods)
-    assigned_courses = CTS.getCoursesByTutor(selected_tutor)
     cubiclesOfTutor = []
     for period in periodsOfTutor:
         cubicle = TPCS.getCubicleByTutorPeriod(selected_tutor, period[0], period[1])
         cubiclesOfTutor.append((period, cubicle))
 
-    return render_template('dashboard.html', username=session.get("username"), role=role, isTutor=isTutor,assigned_courses=assigned_courses, cubiclesOfTutor=cubiclesOfTutor,
+    if(isTutor):
+        assigned_courses = CTS.getCoursesByTutor(selected_tutor)
+        return render_template('dashboard.html', username=session.get("username"), role=role, isTutor=isTutor,
+                           cubiclesOfTutor=cubiclesOfTutor,assigned_courses = assigned_courses,
+                           periods=period_strings, courses=courses, students=students,
+                           all_days=all_days, all_intervals=all_intervals, all_tutors=tutors, **kwargs)
+
+    return render_template('dashboard.html', username=session.get("username"), role=role, isTutor=isTutor,
                            periods=period_strings, courses=courses, students=students,
                            all_days=all_days, all_intervals=all_intervals, all_tutors=tutors, **kwargs)
 
