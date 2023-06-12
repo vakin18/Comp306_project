@@ -60,6 +60,9 @@ def unassignCourse(tutor_name: str, course_code: str):
 
     return error_message
 
+def getTutorsByCourse(courseCode: str):
+    return CTR.getTutorsByCourse(courseCode)
+
 
 
     

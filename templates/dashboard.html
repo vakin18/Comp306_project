@@ -24,7 +24,7 @@
 
     <div class="buttons">
         <form action="/feature1" method="GET">
-            <button>Both admin and student should see this</button>
+            <button disabled>Both admin and student should see this</button>
         </form>
     </div>
 
@@ -88,11 +88,11 @@
 
     </div>
 
-    {% if isTutor %}
+    {% if isTutor and isHeadTutor %}
     <br>
     <div class="buttons">
         <form action="/feature2" method="GET">
-            <button>Only tutor should see this</button>
+            <button disabled>Only tutors should see this</button>
         </form>
     </div>
 
@@ -107,6 +107,27 @@
         </p>
         {% endfor %}
     </div>
+    {% endif %}
+
+    {% if isHeadTutor %}
+    <br>
+    <div class="buttons">
+        <form action="/feature2" method="GET">
+            <button disabled>Only head tutors should see this</button>
+        </form>
+    </div>
+
+    <h4>Head Tutor Information:</h4>
+
+    {% for course, tutors in coursesWithItsTutors %}
+    <p><strong>Course Code:</strong> {{ course }}</p>
+    <p><strong>Tutors:</strong></p>
+    <ul>
+        {% for tutor in tutors %}
+        <li>{{ tutor[0] }}</li>
+        {% endfor %}
+    </ul>
+    {% endfor %}
     {% endif %}
 
     {% if role == "admin" %}

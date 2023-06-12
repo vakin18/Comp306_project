@@ -299,6 +299,7 @@ def dashboard(**kwargs):
 
     selected_tutor = session.get("username")
     isTutor = US.isTutorByUsername(selected_tutor)
+    isHeadTutor = US.isHeadTutorByUsername(selected_tutor)
     assigned_periods = TPS.getPeriodsByTutor(selected_tutor)
     periodsOfTutor = PS.stringToPeriod(assigned_periods)
     cubiclesOfTutor = []
@@ -306,15 +307,31 @@ def dashboard(**kwargs):
         cubicle = TPCS.getCubicleByTutorPeriod(selected_tutor, period[0], period[1])
         cubiclesOfTutor.append((period, cubicle))
 
+    if(isHeadTutor):
+        coursesWithHeadTutor = US.getHeadTutorByUsername(selected_tutor)
+        coursesWithItsTutors = []
+        for course in coursesWithHeadTutor:
+              course_code = course[0]
+              tutorsWithThisCourse = CTS.getTutorsByCourse(course_code)
+              if len(tutorsWithThisCourse) > 1:
+                coursesWithItsTutors.append((course_code,tutorsWithThisCourse))
+
+        assigned_courses = CTS.getCoursesByTutor(selected_tutor)
+        return render_template('dashboard.html', username=session.get("username"), role=role, isTutor=isTutor,
+                           cubiclesOfTutor=cubiclesOfTutor,assigned_courses = assigned_courses, coursesWithItsTutors=coursesWithItsTutors,
+                           periods=period_strings, courses=courses, students=students, isHeadTutor = isHeadTutor,
+                           all_days=all_days, all_intervals=all_intervals, all_tutors=tutors, **kwargs)
+
+
     if(isTutor):
         assigned_courses = CTS.getCoursesByTutor(selected_tutor)
         return render_template('dashboard.html', username=session.get("username"), role=role, isTutor=isTutor,
                            cubiclesOfTutor=cubiclesOfTutor,assigned_courses = assigned_courses,
-                           periods=period_strings, courses=courses, students=students,
+                           periods=period_strings, courses=courses, students=students, isHeadTutor = isHeadTutor,
                            all_days=all_days, all_intervals=all_intervals, all_tutors=tutors, **kwargs)
 
     return render_template('dashboard.html', username=session.get("username"), role=role, isTutor=isTutor,
-                           periods=period_strings, courses=courses, students=students,
+                           periods=period_strings, courses=courses, students=students, isHeadTutor = isHeadTutor,
                            all_days=all_days, all_intervals=all_intervals, all_tutors=tutors, **kwargs)
 
 

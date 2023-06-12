@@ -176,3 +176,24 @@ def check_password(user, password: str):
     """
     hashed_password = user[UserModel.password]
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password)
+
+
+def getHeadTutorByUsername(username: str):
+    c, conn = Repo.getCursorAndConnection()
+
+    # Check if the username exists in the database
+    c.execute(
+        f"SELECT * FROM {DB.courses} WHERE headtutor_name = ?", (username,))
+
+    coursesWithThisUser = c.fetchall()
+    conn.close()
+    return coursesWithThisUser
+
+
+def isHeadTutorByUsername(username: str):
+    headTutor = getHeadTutorByUsername(username)
+
+    if not headTutor:
+        return False
+    else:
+        return True

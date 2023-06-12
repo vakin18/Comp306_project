@@ -119,3 +119,10 @@ def validate_password(password: str):
         return False
     
     return True
+
+def isHeadTutorByUsername(username: str):
+    return UR.isHeadTutorByUsername(username)
+
+
+def getHeadTutorByUsername(username: str):
+    return UR.getHeadTutorByUsername(username)
