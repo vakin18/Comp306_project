@@ -50,7 +50,7 @@
             <select id="tutor_selection_stu" name="tutor_selection_stu">
                 {% if tutors %}
                 {% for tutor in tutors %}
-                <option value="{{tutor}}">{{tutor}}</option>
+                <option value="{{tutor}}" {% if selected_tutor and tutor==selected_tutor %} selected {% endif %}>{{tutor}}</option>
                 {% endfor %}
                 {% endif %}
             </select>
@@ -59,12 +59,12 @@
             <button>Get Periods</button>
         </form>
 
-        <form action="/getPeriodsOfTutorStudent" method="POST">
+        <form action="/getCubicle" method="POST">
             <label for="period_selection_stu">Periods:</label>
             <select id="period_selection_stu" name="period_selection_stu">
                 {% if tutorperiods %}
                 {% for period in tutorperiods %}
-                <option value="{{period}}">{{period}}</option>
+                <option value="{{period}}" {% if selected_period and period==selected_period %} selected {% endif %}>{{period}}</option>
                 {% endfor %}
                 {% endif %}
             </select>
@@ -74,6 +74,17 @@
                 value={{selected_tutor}}>
             <button>Get Cubicle</button>
         </form>
+
+        <div>
+
+            <label for="cubicle_display">Cubicle No:</label>
+
+            {% if tutorcubicles %}
+            {% for cubicle in tutorcubicles %}
+            <div id="cubicle_display" class="d-inline p-2" value="{{cubicle}}">{{cubicle}}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
 
     </div>
 

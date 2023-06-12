@@ -251,13 +251,18 @@ def getCubicle():
     selected_tutor = request.form.get("tutor_selection_stu")
     assigned_periods = TPS.getPeriodsByTutor(selected_tutor)
 
-    selected_period = request.form.getlist('period_selection')
+    selected_period = request.form.get('period_selection_stu')
 
     period = PS.stringToPeriod([selected_period])
+
+
+
+    tutorcubicles = TPCS.getCubicleByTutorPeriod(selected_tutor, period[0][0], period[0][1])
     #PS.getPeriod(day, interval)[PeriodModel.id]
     #period_id = period[PeriodModel.id]
 
-    return dashboard()
+    return dashboard(selected_course=selected_course, selected_tutor=selected_tutor, selected_period=selected_period, tutorperiods=assigned_periods,
+                     tutors=tutors, tutorcubicles=tutorcubicles)
 
 
 

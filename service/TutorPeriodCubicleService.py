@@ -57,3 +57,23 @@ def getFreeCubicles(day, interval):
     
 
     return error_message, cubicle_list
+
+def getCubicleByTutorPeriod(tutor, day, interval):
+    period = PR.getPeriod(day, interval)
+
+    if not period:
+        
+        #TODO: handle
+        print("This period does not exist")
+        
+        return 
+    
+    period_id = period[PeriodModel.id]
+
+    cubicles_tuples = TPCR.getCubicleByTutorPeriod(tutor, period_id)
+
+    
+
+    cubicle_list = [cubicle[0] for cubicle in cubicles_tuples]
+
+    return cubicle_list

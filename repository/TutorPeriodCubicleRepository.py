@@ -77,3 +77,16 @@ def getFreeCubicles(period_id):
     result = c.fetchall()
     conn.close()
     return result
+
+def getCubicleByTutorPeriod(tutor_username: str, period_id: str):
+
+    c, conn = Repo.getCursorAndConnection()
+
+    c.execute(f"SELECT cubicle_number FROM {DB.tp_cubicle}"
+              f" WHERE tp_id IN"
+              f" (SELECT id FROM {DB.tutor_period}"
+              f" WHERE tutor_username='{tutor_username}' AND period_id='{period_id}')")
+    
+    result = c.fetchall()
+    conn.close()
+    return result
