@@ -77,3 +77,15 @@ def getCubicleByTutorPeriod(tutor, day, interval):
     cubicle_list = [cubicle[0] for cubicle in cubicles_tuples]
 
     return cubicle_list
+
+def getAssignedCubicles(tutor):
+
+    cubicles_tuples = TPCR.getCubiclesAssigned(tutor)
+
+    cubicle_list = [cubicle[0] for cubicle in cubicles_tuples]
+
+    return cubicle_list
+
+def unassignCubicle(tutor, cubicle):
+
+    TPCR.unassignCubicle(tutor, cubicle)

@@ -373,6 +373,36 @@
         
     </div>
 
+    <div class="buttons">
+        <form action="/select-tutor-for-unassinging-cubicle" method="GET">
+            <label for="tutor">Tutor:</label>
+            <select id="all_tutors" name="all_tutors">
+                {% if all_tutors %}
+                {% for tutor in all_tutors %}
+                <option value="{{tutor}}" {% if selected_tutor and tutor==selected_tutor %} selected {% endif %}> {{tutor}} </option>
+                {% endfor %}
+                {% endif %}
+            </select>
+            <button>Get Cubicles</button>
+        </form>
+
+
+        <form action="/unassign-cubicle" method="POST">
+            <label for="cubicle-selection">Cubicles:</label>
+            <select id="cubicle-selection" name="cubicle-selection" class="selectpicker"
+                aria-label="size 3 select example">
+                {% for assigned_cubicle in assigned_cubicles %}
+                <option value="{{assigned_cubicle}}">{{assigned_cubicle}}</option>
+                {% endfor %}
+            </select>
+
+            <input type="hidden" id="all_tutors" name="all_tutors" value={{selected_tutor}}>
+            <button>Unassign Cubicle</button>
+        </form>
+
+
+    </div>
+
     {% endif %}
 
 

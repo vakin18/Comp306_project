@@ -90,3 +90,29 @@ def getCubicleByTutorPeriod(tutor_username: str, period_id: str):
     result = c.fetchall()
     conn.close()
     return result
+
+def getCubiclesAssigned(tutor_username: str):
+
+    c, conn = Repo.getCursorAndConnection()
+
+    c.execute(f"SELECT cubicle_number FROM {DB.tp_cubicle}"
+              f" WHERE tp_id IN (SELECT id FROM {DB.tutor_period}"
+              f" WHERE tutor_username='{tutor_username}')")
+    
+    result = c.fetchall()
+    conn.close()
+    return result
+
+def unassignCubicle(tutor_username: str, cubicle_number: str):
+
+    
+
+    c, conn = Repo.getCursorAndConnection()
+
+    c.execute(f"DELETE FROM {DB.tp_cubicle}"
+              f" WHERE cubicle_number='{cubicle_number}' AND"
+              f" tp_id IN (SELECT id FROM {DB.tutor_period} WHERE tutor_username='{tutor_username}')")
+    
+    conn.commit()
+    conn.close()
+    return

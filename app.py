@@ -190,6 +190,24 @@ def assignTutorPeriodCubicle():
 
     return dashboard(error_message=error_message)
 
+@app.route('/select-tutor-for-unassinging-cubicle', methods=['GET'])
+def selectCubicleForUnassigning():
+    selected_tutor = request.args.get('all_tutors')
+    
+    assigned_cubicles = TPCS.getAssignedCubicles(selected_tutor)
+    
+    return dashboard(selected_tutor=selected_tutor, assigned_cubicles=assigned_cubicles)
+
+@app.route('/unassign-cubicle', methods=['POST'])
+def unassignCubicle():
+
+    selected_tutor = request.form.get('all_tutors')
+    selected_cubicle = request.form.get('cubicle-selection')
+
+    TPCS.unassignCubicle(selected_tutor, selected_cubicle)
+
+    return dashboard()
+
 
 
 
